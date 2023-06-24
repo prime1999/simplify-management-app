@@ -6,14 +6,6 @@ import Grid from "@mui/material/Grid";
 import { GiBookPile } from "react-icons/gi";
 import taskImage from "../assets/images/taskImage.jpg";
 
-// const Item = styled(Paper)(({ theme }) => ({
-//   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-//   ...theme.typography.body2,
-//   padding: theme.spacing(1),
-//   textAlign: "center",
-//   color: theme.palette.text.secondary,
-// }));
-
 const Home = () => {
   return (
     <div className="container flex justify-center items-center h-screen w-10/12 mx-auto">

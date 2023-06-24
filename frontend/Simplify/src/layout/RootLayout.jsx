@@ -1,9 +1,10 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 
 const RootLayout = () => {
   return (
     <div>
-      <h1 className="text-red-500">Hello</h1>
+      <Outlet />
     </div>
   );
 };

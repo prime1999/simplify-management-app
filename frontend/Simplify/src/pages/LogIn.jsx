@@ -1,15 +1,65 @@
-import React from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { GiBookPile } from "react-icons/gi";
-import { Link } from "react-router-dom";
-import taskImage from "../assets/images/taskImage.jpg";
+import { toast } from "react-toastify";
+import { logUserIn, reset } from "../features/AuthSlice";
 
 const LogIn = () => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  // destructure the auth initialstate properties form the initialstae in the authslice using the useSelector hook
+  const { user, isLoading, message, isError, isSuccess } = useSelector(
+    (state) => state.auth
+  );
+  // destructure the form data properties from the formdata state
+  const { email, password } = formData;
+
+  useEffect(() => {
+    if (isError) {
+      // if an error occure, throw the error message as a toast
+      toast.error(message);
+    }
+
+    if (isSuccess) {
+      // navigate to the dashoard page if the user has completed the registration successfully
+      navigate("/");
+      // throw a success message
+      toast.success(`welcome back, ${user.name}`);
+    }
+    // dispatch the reset function in the authslice reducer to clear the form
+    dispatch(reset());
+  }, [dispatch, navigate, user, message, isLoading, isError, isSuccess]);
+
+  const onChange = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.id]: e.target.value,
+    }));
+  };
+  // Form subimtion function
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // check if all fields have been filled properlyby user
+    if (password && email) {
+      const userData = {
+        email,
+        password,
+      };
+      // dispatch the user data filled in for registration to the register function in the authslice
+      dispatch(logUserIn(userData));
+    }
+  };
   return (
     <>
       <div className="w-full h-screen mx-auto flex items-center justify-center">
         <div className="w-full h-full mx-auto flex items-center justify-center">
           <div className="w-1/3 h-[470px] p-8 bg-white shadow-lg">
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="flex items-center text-navyBlue text-3xl mb-8">
                 <GiBookPile className="" />
                 <h2 className="font-poppins font-bold ml-2 uppercase">
@@ -23,14 +73,16 @@ const LogIn = () => {
                 <div className="flex flex-col">
                   <input
                     type="Your email"
-                    value=""
+                    value={email}
+                    onChange={onChange}
                     placeholder="Your email"
                     id="email"
                     className="h-12 p-2 bg-gray-100 border-b-2 mb-4 focus:outline-none focus:border-navyBlue"
                   />
                   <input
                     type="password"
-                    value=""
+                    value={password}
+                    onChange={onChange}
                     placeholder="Your password"
                     id="password"
                     className="h-12 p-2 bg-gray-100 border-b-2 mb-4 focus:outline-none focus:border-navyBlue"

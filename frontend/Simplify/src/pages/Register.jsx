@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { GiBookPile } from "react-icons/gi";
 import { Link, useNavigate } from "react-router-dom";
-import taskImage from "../assets/images/taskImage.jpg";
 import { useSelector, useDispatch } from "react-redux";
 import { register, reset } from "../features/AuthSlice";
 import { toast } from "react-toastify";
@@ -56,9 +55,6 @@ const Register = () => {
       };
       // dispatch the user data filled in for registration to the register function in the authslice
       dispatch(register(userData));
-    } else {
-      // throw error if any of the filled has not been filled appropriately
-      toast.error("Please input correct credentials");
     }
   };
 

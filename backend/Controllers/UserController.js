@@ -65,11 +65,12 @@ const logUserIn = asynchandler(async (req, res) => {
   if (User && (await bcrypt.compare(password, User.password))) {
     res.status(200).json({
       id: User._id,
+      name: User.name,
       email: User.email,
       token: generateToken(User._id),
     });
   } else {
-    re.status(401);
+    res.status(401);
     throw new Error("Not Authorized");
   }
 });
