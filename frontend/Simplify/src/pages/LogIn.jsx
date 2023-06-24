@@ -1,5 +1,6 @@
 import React from "react";
 import { GiBookPile } from "react-icons/gi";
+import { Link } from "react-router-dom";
 import taskImage from "../assets/images/taskImage.jpg";
 
 const LogIn = () => {
@@ -7,7 +8,7 @@ const LogIn = () => {
     <>
       <div className="w-full h-screen mx-auto flex items-center justify-center">
         <div className="w-full h-full mx-auto flex items-center justify-center">
-          <div className="w-1/3 h-5/6 p-8 bg-white shadow-lg">
+          <div className="w-1/3 h-[470px] p-8 bg-white shadow-lg">
             <form>
               <div className="flex items-center text-navyBlue text-3xl mb-8">
                 <GiBookPile className="" />
@@ -40,9 +41,12 @@ const LogIn = () => {
                 </div>
                 <div className="flex justify-between items-center mt-4">
                   <p>Don't have an Account?</p>
-                  <p className="text-navyBlue font-poppins font-bold text-lg cursor-pointer border-b-2 border-b-navyBlue">
+                  <Link
+                    to="/register"
+                    className="text-navyBlue font-poppins font-bold text-lg border-b-2 border-b-navyBlue"
+                  >
                     Register Here
-                  </p>
+                  </Link>
                 </div>
               </div>
             </form>

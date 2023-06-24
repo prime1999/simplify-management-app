@@ -5,6 +5,8 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import RootLayout from "./layout/RootLayout";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
@@ -31,6 +33,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <RouterProvider router={router} />
       </ThemeProvider>
+      <ToastContainer />
     </>
   );
 }
