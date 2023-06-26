@@ -8,29 +8,30 @@ const {
   deleteTask,
   updateTask,
 } = require("../Controllers/TaskController");
+const { protect } = require("../middleware/authMiddleware");
 
 //create an express router
 const router = express.Router();
 
 //get all tasks
-router.get("/", getTasks);
+router.get("/", protect, getTasks);
 
 //get searched task
-router.get("/search", searchTask);
+router.get("/search", protect, searchTask);
 
 //get searched task based on category
-router.get("/category/:category", getTask);
+router.get("/category/:category", protect, getTask);
 
 //get single task
-router.get("/:id", getSingleTask);
+router.get("/:id", protect, getSingleTask);
 
 //create a task
-router.post("/", createTask);
+router.post("/", protect, createTask);
 
 //delete task
-router.delete("/:id", deleteTask);
+router.delete("/:id", protect, deleteTask);
 
 //update task
-router.patch("/:id", updateTask);
+router.patch("/:id", protect, updateTask);
 
 module.exports = router;

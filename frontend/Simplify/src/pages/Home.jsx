@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -33,12 +34,18 @@ const Home = () => {
                 <div className="flex flex-col items-center mt-4 h-[500px] w-full">
                   <img className="w-[500px]" src={taskImage} alt="" />
                   <div className="flex flex-col justify-center items-center w-full">
-                    <button className="w-1/2 border-2 border-blue py-2 rounded-full font-lato text-blue font-md font-semibold hover:bg-blue hover:text-white">
+                    <Link
+                      to="/register"
+                      className="w-1/2 text-center border-2 border-blue py-2 rounded-full font-lato text-blue font-md font-semibold hover:bg-blue hover:text-white"
+                    >
                       Get Started
-                    </button>
-                    <button className="w-1/2 mt-4 bg-blue py-2 rounded-full font-lato border-2 border-white text-white font-md font-semibold hover:border-2 hover:border-blue hover:bg-white hover:text-blue">
+                    </Link>
+                    <Link
+                      to="/login"
+                      className="w-1/2 text-center mt-4 bg-blue py-2 rounded-full font-lato border-2 border-white text-white font-md font-semibold hover:border-2 hover:border-blue hover:bg-white hover:text-blue"
+                    >
                       Log In
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>

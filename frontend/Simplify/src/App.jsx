@@ -12,11 +12,12 @@ import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import LogIn from "./pages/LogIn";
+import PrivateRoute from "./components/PrivateRoute";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<RootLayout />}>
+      <Route path="/" element={<PrivateRoute />}>
         <Route index element={<Dashboard />} />
       </Route>
       <Route path="/getting-started" element={<Home />} />

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { GiBookPile } from "react-icons/gi";
 import { toast } from "react-toastify";
-import { logUserIn, reset } from "../features/AuthSlice";
+import { logUserIn, reset } from "../features/Auth/AuthSlice";
 
 const LogIn = () => {
   const [formData, setFormData] = useState({
@@ -25,15 +25,19 @@ const LogIn = () => {
       toast.error(message);
     }
 
-    if (isSuccess) {
+    if (isSuccess && user) {
       // navigate to the dashoard page if the user has completed the registration successfully
       navigate("/");
       // throw a success message
       toast.success(`welcome back, ${user.name}`);
+      console.log(user);
     }
+    console.log(user);
     // dispatch the reset function in the authslice reducer to clear the form
     dispatch(reset());
-  }, [dispatch, navigate, user, message, isLoading, isError, isSuccess]);
+  }, [user, message, isError, isSuccess, dispatch, navigate]);
+
+  //console.log(user);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -52,6 +56,7 @@ const LogIn = () => {
       };
       // dispatch the user data filled in for registration to the register function in the authslice
       dispatch(logUserIn(userData));
+      console.log(user);
     }
   };
   return (

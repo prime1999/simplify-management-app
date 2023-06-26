@@ -4,6 +4,11 @@ const Schema = mongoose.Schema;
 
 const taskSchema = new Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "user",
+    },
     title: {
       type: String,
       required: true,
@@ -14,11 +19,23 @@ const taskSchema = new Schema(
     },
     category: {
       type: String,
+      enum: [
+        "personal",
+        "work",
+        "Home",
+        "Family",
+        "Education",
+        "social",
+        "education",
+        "travel",
+        "financial",
+        "miscellaneous",
+      ],
       required: true,
     },
     status: {
       type: String,
-      required: true,
+      default: "pending",
     },
     due_date: {
       type: String,
