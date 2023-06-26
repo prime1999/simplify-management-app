@@ -6,9 +6,11 @@ import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
+import Badge from "@mui/material/Badge";
 import { GiBookPile } from "react-icons/gi";
 import { RxMagnifyingGlass } from "react-icons/rx";
 import { FiLogOut } from "react-icons/fi";
+import { BsBellFill } from "react-icons/bs";
 import { logout, reset } from "../features/Auth/AuthSlice";
 
 const Navbar = () => {
@@ -58,7 +60,7 @@ const Navbar = () => {
               SIMPLIFY
             </h2>
           </div>
-          <form
+          {/* <form
             onSubmit={handleSubmit}
             className="flex items-center justify-between"
           >
@@ -69,9 +71,9 @@ const Navbar = () => {
                 className="w-96 bg-gray-100 h-9 px-2 rounded-md focus:outline-none"
               />
               <RxMagnifyingGlass className="absolute top-2 right-3 text-xl hover:cursor-pointer" />
-            </div>
-            {/* menu starts */}
-            <div>
+            </div> */}
+          {/* menu starts */}
+          {/* <div>
               <button
                 id="fade-button"
                 aria-controls={open ? "fade-menu" : undefined}
@@ -107,15 +109,22 @@ const Navbar = () => {
                   <p className="font-right">Clients</p>
                 </MenuItem>
               </Menu>
+            </div> */}
+          {/* menu ends */}
+          {/* </form> */}
+          <div className="flex items-center justify-between">
+            <div className="mr-8">
+              <Badge color="primary" badgeContent={0} showZero>
+                <BsBellFill className="text-xl" />
+              </Badge>
             </div>
-            {/* menu ends */}
-          </form>
-          <button
-            onClick={onLogOut}
-            className="bg-blue py-2 px-4 font-right text-white rounded-lg flex items-center"
-          >
-            Log-out <FiLogOut className="ml-2" />
-          </button>
+            <button
+              onClick={onLogOut}
+              className="bg-blue py-2 px-4 font-right text-white rounded-lg flex items-center"
+            >
+              Log-out <FiLogOut className="ml-2" />
+            </button>
+          </div>
         </div>
       </div>
     </>

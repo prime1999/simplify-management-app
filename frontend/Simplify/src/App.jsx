@@ -28,7 +28,19 @@ const router = createBrowserRouter(
 );
 
 function App() {
-  const theme = createTheme();
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "rgb(0, 0, 255)", // Set your desired primary color
+      },
+      neon: {
+        main: "rgb(31, 81, 255)",
+      },
+      navy: {
+        main: "rgb(0, 0, 128)",
+      },
+    },
+  });
   return (
     <>
       <ThemeProvider theme={theme}>
