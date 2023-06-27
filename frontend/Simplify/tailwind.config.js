@@ -17,8 +17,10 @@ export default {
       colors: {
         darkGray: "rgb(195,195,195)",
         blue: "rgb(0, 0, 255)",
-        neonBlue: "rgb(31, 81, 255)",
+        secondaryBlue: "#5161F1",
+        neonBlue: "#63E9F8",
         navyBlue: "rgb(0, 0, 128)",
+        black: "#252243",
       },
     },
   },

@@ -18,7 +18,9 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<PrivateRoute />}>
-        <Route index element={<Dashboard />} />
+        <Route path="/" element={<RootLayout />}>
+          <Route index element={<Dashboard />} />
+        </Route>
       </Route>
       <Route path="/getting-started" element={<Home />} />
       <Route path="/register" element={<Register />} />
@@ -34,7 +36,7 @@ function App() {
         main: "rgb(0, 0, 255)", // Set your desired primary color
       },
       neon: {
-        main: "rgb(31, 81, 255)",
+        main: "#63E9F8",
       },
       navy: {
         main: "rgb(0, 0, 128)",

@@ -6,6 +6,6 @@
 @tailwind components;
 @tailwind utilities;
 
-button, input{
+button, input, p{
     transition: .5s ease-in-out;
 }
