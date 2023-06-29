@@ -1,15 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+import { toast } from "react-toastify";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
+import Spinner from "../components/Spinner";
+import { createTask, reset } from "../features/Tasks/TaskSlice";
 
 const AddTask = () => {
-  const [checkedValue, setCheckedValue] = useState(null);
   // for the menuItem
-  const [value, setValue] = useState("in_progress");
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  // for the form data
+  const [value, setValue] = useState("pending");
+  const [checkedValue, setCheckedValue] = useState(null);
+  const [formData, setformData] = useState({
+    title: "",
+    description: "",
+    status: "",
+    category: "",
+    due_date: "",
+  });
+  const [taskCreated, setTaskCreated] = useState(false);
+  const { isLoading, isSuccess, message, isError } = useSelector(
+    (state) => state.tasks
+  );
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // functions for the menuItem
   const handleClick = (e) => {
@@ -20,21 +40,65 @@ const AddTask = () => {
     setAnchorEl(null);
   };
 
-  const handleSelector = (e) => {
-    setValue(e.currentTarget.getAttribute("data-value"));
+  const { title, description, status, category, due_date } = formData;
+
+  // for chooseing the task status
+  const handleSelector = (value) => {
     console.log(value);
+    setValue(value);
+    setformData((prevState) => ({
+      ...prevState,
+      status: value,
+    }));
     handleClose();
   };
 
   // for category checkbox
   const handleChecked = (e) => {
-    setCheckedValue(e.target.value);
-    console.log(checkedValue);
+    const newValue = e.target.value;
+    setCheckedValue(newValue);
+    setformData((prevState) => ({
+      ...prevState,
+      category: newValue,
+    }));
   };
 
+  // function to change the value of the title, description and due_date field to what is typed in by the user
+  const handleChange = (e) => {
+    setformData((prevState) => ({
+      ...prevState,
+      [e.target.id]: e.target.value,
+    }));
+  };
+
+  useEffect(() => {
+    if (taskCreated) {
+      toast.success("New task added");
+      navigate("/tasks");
+      dispatch(reset());
+    }
+    if (isError) {
+      toast.error(message);
+    }
+    dispatch(reset());
+    setTaskCreated(false);
+  }, [taskCreated, isError, message, navigate, dispatch]);
+
+  // function to submit the task
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (title && description && due_date && category) {
+      dispatch(createTask(formData));
+      setTaskCreated(true);
+      dispatch(reset());
+    } else {
+      toast.error("Please fill in all fields");
+    }
   };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <>
@@ -46,10 +110,16 @@ const AddTask = () => {
           <input
             type="text"
             placeholder="task title"
+            value={title}
+            onChange={handleChange}
+            id="title"
             className="w-full p-2 bg-white shadow-md focus:outline-none"
           />
           <textarea
             placeholder="task description"
+            value={description}
+            onChange={handleChange}
+            id="description"
             className="w-full my-4 p-2 bg-white shadow-md focus:outline-none"
           />
           <div className="w-full flex items-end justify-between px-2">
@@ -57,6 +127,9 @@ const AddTask = () => {
               <label className="text-md text-gray-600">Due-date</label>
               <input
                 type="date"
+                value={due_date}
+                onChange={handleChange}
+                id="due_date"
                 className="w-full p-2 mt-2 bg-white shadow-md focus:outline-none"
               />
             </div>
@@ -66,6 +139,7 @@ const AddTask = () => {
                 <h3>Status</h3>
                 <div>
                   <button
+                    type="button"
                     id="fade-button"
                     aria-controls={open ? "fade-menu" : undefined}
                     aria-haspopup="true"
@@ -90,13 +164,13 @@ const AddTask = () => {
                     onClose={handleClose}
                     TransitionComponent={Fade}
                   >
-                    <MenuItem onClick={handleSelector} data-value="in_progress">
+                    <MenuItem onClick={() => handleSelector("in-progress")}>
                       <p className="font-right">In-Progress</p>
                     </MenuItem>
-                    <MenuItem onClick={handleSelector} data-value="completed">
+                    <MenuItem onClick={() => handleSelector("completed")}>
                       <p className="font-right">Completed</p>
                     </MenuItem>
-                    <MenuItem onClick={handleSelector} data-value="pending">
+                    <MenuItem onClick={() => handleSelector("pending")}>
                       <p className="font-right">Pending</p>
                     </MenuItem>
                   </Menu>

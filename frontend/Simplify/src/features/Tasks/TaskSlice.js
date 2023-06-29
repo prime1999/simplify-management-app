@@ -32,6 +32,28 @@ export const getTasks = createAsyncThunk(
   }
 );
 
+//create a new task
+export const createTask = createAsyncThunk(
+  "tasks/createTask",
+  async (taskData, thunkAPI) => {
+    try {
+      // await on the get tasks function in the task service component
+      const token = thunkAPI.getState().auth.user.token;
+      return await taskService.createTask(token, taskData);
+    } catch (error) {
+      // assign an error value if there is one in any of the listed error value holders below
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      // return the errror message using the thunkapi rejectwithvalue
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const taskSlice = createSlice({
   name: "tasks",
   initialState,
@@ -49,6 +71,19 @@ export const taskSlice = createSlice({
         state.tasks = action.payload;
       })
       .addCase(getTasks.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(createTask.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createTask.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+      })
+      .addCase(createTask.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

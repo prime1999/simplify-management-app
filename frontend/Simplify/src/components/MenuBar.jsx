@@ -9,6 +9,10 @@ const MenuBar = () => {
     .split("/")
     .filter((segment) => segment !== "");
   const tasksPath = pathSegments[0];
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
   return (
     <div className="mt-8">
       <div className="flex items-center justify-between">

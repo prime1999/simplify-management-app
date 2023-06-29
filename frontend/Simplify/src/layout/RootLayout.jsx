@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import Drawer from "@mui/material/Drawer";
 import Navbar from "../components/Navbar";
@@ -12,6 +13,8 @@ import Footer from "../components/Footer";
 const drawerWidth = 240;
 
 const RootLayout = () => {
+  // get the tasks state from the task redux store
+  const { tasks } = useSelector((state) => state.tasks);
   // get the current url location of the page
   const location = useLocation();
   // split the url into different using the /
@@ -51,8 +54,14 @@ const RootLayout = () => {
               <div className="mt-16 px-8 font-right text-md text-gray-800">
                 <div className="flex items-center duration-500 hover:text-gray-300">
                   <MdOutlineTaskAlt />{" "}
-                  <Link to="/tasks" className="ml-2">
+                  <Link
+                    to="/tasks"
+                    className="flex items-center justify-between ml-2"
+                  >
                     Tasks
+                    <p className="ml-2 bg-blue px-2 text-white rounded-lg">
+                      {tasks ? tasks.length : 0}
+                    </p>
                   </Link>
                 </div>
                 <div className="flex items-center mt-8 duration-500 hover:text-gray-300">

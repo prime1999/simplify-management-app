@@ -17,23 +17,27 @@ const InProgressTask = ({ taskStatus }) => {
               {in_progress?.length}
             </span>
           </h1>
-          <div className="flex items-center">
-            <BsTrash3Fill className="text-blue hover:cursor-pointer" />
-            <BiEdit className="text-blue ml-4 text-xl hover:cursor-pointer" />
-          </div>
         </div>
         {in_progress?.map((task) => (
           <div
             key={task._id}
             className="w-11/12 mx-auto rounded-2xl bg-white font-right text-sm py-4 px-8 mb-4 text-black"
           >
-            <h4 className="text-lg">{task?.title}</h4>
-            <p
-              style={{ backgroundColor: "rgba(162, 162, 255, 0.2)" }}
-              className="text-blue w-1/3 rounded-2xl mt-2 px-2"
-            >
-              {task?.category}
-            </p>
+            <div className="flex justify-between items-start">
+              <div>
+                <h4 className="text-lg">{task?.title}</h4>
+                <p
+                  style={{ backgroundColor: "rgba(162, 162, 255, 0.2)" }}
+                  className="text-blue text-center rounded-2xl mt-2 px-2"
+                >
+                  {task?.category}
+                </p>
+              </div>
+              <div className="flex items-center">
+                <BsTrash3Fill className="text-blue hover:cursor-pointer" />
+                <BiEdit className="text-blue ml-4 text-xl hover:cursor-pointer" />
+              </div>
+            </div>
             <div className="flex items-center justify-between mt-8">
               <p className="text-gray-400 text-md">
                 {format(new Date(task?.due_date), "MMMM d, yyyy")}

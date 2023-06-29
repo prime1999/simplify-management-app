@@ -45,6 +45,11 @@ const createTask = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("Not Authorized");
   }
+  // throw an error if any of the required fields is not filled
+  if (!title || !description || !due_date || !category) {
+    res.json(400);
+    throw new Error("Please fill in all fields");
+  }
   // get all tasks of the user
   const tasks = await task.find();
   // check if the task already exist
@@ -53,11 +58,6 @@ const createTask = asyncHandler(async (req, res) => {
   if (taskExist) {
     res.status(400);
     throw new Error("Task already exist");
-  }
-  // throw an error if any of the required fields is not filled
-  if (!title || !description || !due_date || !category) {
-    res.json(400);
-    throw new Error("Please fill in all fields");
   }
 
   // create task using the details filled in by the user

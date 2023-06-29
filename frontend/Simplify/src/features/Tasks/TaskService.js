@@ -14,6 +14,19 @@ export const getTasks = async (token) => {
   return res.data;
 };
 
-const taskService = { getTasks };
+// create a new task
+export const createTask = async (token, taskData) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const res = await axios.post(API_URL, taskData, config);
+  console.log(res.data);
+
+  return res.data;
+};
+
+const taskService = { getTasks, createTask };
 
 export default taskService;
