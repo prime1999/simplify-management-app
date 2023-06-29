@@ -15,6 +15,7 @@ import LogIn from "./pages/LogIn";
 import PrivateRoute from "./components/PrivateRoute";
 import Tasks from "./pages/Tasks";
 import TasksCategories from "./pages/TasksCategories";
+import AddTask from "./pages/AddTask";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,6 +34,10 @@ const router = createBrowserRouter(
               path="/tasks/category/:value"
               element={<TasksCategories />}
             />
+          </Route>
+          {/* adding task route */}
+          <Route path="/add-task" element={<PrivateRoute />}>
+            <Route path="/add-task" element={<AddTask />} />
           </Route>
         </Route>
       </Route>

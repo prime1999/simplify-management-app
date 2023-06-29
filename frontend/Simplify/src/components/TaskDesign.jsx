@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { format } from "date-fns";
 import PendingTasks from "./PendingTasks";
 import CompletedTask from "./CompletedTask";
 import InProgressTask from "./InProgressTask";
@@ -15,31 +13,9 @@ const TaskDesign = () => {
   });
 
   // get the tasks for the redux strore (tasks)
-  const { tasks } = useSelector((state) => state.tasks);
+  const { tasks, isLoading } = useSelector((state) => state.tasks);
 
   useEffect(() => {
-    // check and set the state of the status depending of the status using switch
-    // tasks?.filter((task) => {
-    //   switch (task.status) {
-    //     case "completed":
-    //       setCompleted((prevCompleted) => [...prevCompleted, task]);
-    //       break;
-    //     case "in-progress":
-    //       setInProgress((prevInProgress) => [...prevInProgress, task]);
-    //       break;
-    //     case "pending":
-    //       setPending((prevPending) => [...prevPending, task]);
-    //       break;
-    //     default:
-    //       return false;
-    //   }
-
-    //   if (task.status === "completed") {
-    //     setCompleted([...completed, task]);
-    //   }
-    //   return true;
-    // });
-    // array of objects to store the tasks based on there status
     const taskStatus = {
       pending: [],
       completed: [],

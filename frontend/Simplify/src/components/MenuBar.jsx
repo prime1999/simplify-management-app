@@ -1,35 +1,9 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Fade from "@mui/material/Fade";
+import { BsPlus } from "react-icons/bs";
 import { RxMagnifyingGlass } from "react-icons/rx";
 
 const MenuBar = () => {
-  // for the menuItem
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-
-  // functions for the menuItem
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleSelector = (e) => {
-    const selectedValue = e.currentTarget.getAttribute("data-value");
-    console.log(selectedValue);
-    handleClose();
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
-
   const location = useLocation();
   const pathSegments = location.pathname
     .split("/")
@@ -54,46 +28,16 @@ const MenuBar = () => {
             />
             <RxMagnifyingGlass className="absolute top-2 right-3 text-xl hover:cursor-pointer" />
           </div>
-          {/* menu starts */}
-          {/* <div>
-            <button
-              id="fade-button"
-              aria-controls={open ? "fade-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
-              className="flex items-center font-right"
-            >
-              Category
-              {anchorEl ? (
-                <MdKeyboardArrowUp className="ml-2 hover:cursor-pointer" />
-              ) : (
-                <MdKeyboardArrowDown className="ml-2 hover:cursor-pointer" />
-              )}
-            </button>
-            <Menu
-              id="fade-menu"
-              MenuListProps={{
-                "aria-labelledby": "fade-button",
-              }}
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              TransitionComponent={Fade}
-            >
-              <MenuItem onClick={handleSelector} data-value="tasks">
-                <p className="font-right">Tasks</p>
-              </MenuItem>
-              <MenuItem onClick={handleSelector} data-value="projects">
-                <p className="font-right">Projects</p>
-              </MenuItem>
-              <MenuItem onClick={handleSelector} data-value="clients">
-                <p className="font-right">Clients</p>
-              </MenuItem>
-            </Menu>
-          </div> */}
-          {/* menu ends */}
         </form>
+        <div
+          className="rounded-full p-2 text-blue font-poppins font-semibold text-sm hover:bg-neonBlue"
+          style={{ backgroundColor: "rgba(162, 162, 255, 0.5)" }}
+          id="in_progress"
+        >
+          <Link to="/add-task" className="flex items-center justify-between">
+            <BsPlus /> <p>Add {tasksPath}</p>
+          </Link>
+        </div>
       </div>
       <hr className="mt-4" />
       <div className="mt-4 text-md font-lato font-semibold text-gray-500">

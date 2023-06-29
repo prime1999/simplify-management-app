@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { BsTrash3Fill } from "react-icons/bs";
+import { BiEdit } from "react-icons/bi";
 import { format } from "date-fns";
 
 const InProgressTask = ({ taskStatus }) => {
@@ -7,7 +9,7 @@ const InProgressTask = ({ taskStatus }) => {
   return (
     <>
       <div className="w-1/3 rounded-2xl" id="in_progress">
-        <div className="font-poppins font-semiBold py-4 px-8">
+        <div className="flex items-center justify-between font-poppins font-semiBold py-4 px-8">
           <h1 className="text-blue">
             {" "}
             In-Progress{" "}
@@ -15,6 +17,10 @@ const InProgressTask = ({ taskStatus }) => {
               {in_progress?.length}
             </span>
           </h1>
+          <div className="flex items-center">
+            <BsTrash3Fill className="text-blue hover:cursor-pointer" />
+            <BiEdit className="text-blue ml-4 text-xl hover:cursor-pointer" />
+          </div>
         </div>
         {in_progress?.map((task) => (
           <div
