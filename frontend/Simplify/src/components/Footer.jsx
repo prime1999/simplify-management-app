@@ -13,7 +13,7 @@ const Footer = () => {
   return (
     <>
       <footer
-        className="p-16 font-lato"
+        className="p-16 font-lato mt-16"
         style={{ backgroundColor: "rgba(0, 0, 0, 0.02)" }}
       >
         <div className="flex justify-between">

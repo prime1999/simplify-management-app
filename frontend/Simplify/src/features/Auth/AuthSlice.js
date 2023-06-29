@@ -11,8 +11,6 @@ const initialState = {
   isSuccess: false,
   isLoading: false,
 };
-console.log(user, 1);
-console.log(initialState.user, 2);
 
 // register user
 export const register = createAsyncThunk(

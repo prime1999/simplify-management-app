@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import Drawer from "@mui/material/Drawer";
 import Navbar from "../components/Navbar";
 import { MdOutlineTaskAlt, MdOutlineExplore } from "react-icons/md";
@@ -12,6 +12,18 @@ import Footer from "../components/Footer";
 const drawerWidth = 240;
 
 const RootLayout = () => {
+  // get the current url location of the page
+  const location = useLocation();
+  // split the url into different using the /
+  const pathSegments = location.pathname
+    .split("/")
+    .filter((segment) => segment !== "");
+  // get the tasks string from the url
+  const tasksPath = pathSegments[0];
+  // make the task string capitalized if there is a tasksPath
+  const path = tasksPath
+    ? `${tasksPath.charAt(0).toUpperCase()}${tasksPath.slice(1)}`
+    : "";
   return (
     <>
       <div className="flex">
@@ -33,24 +45,39 @@ const RootLayout = () => {
             <div>
               <h1 className="flex items-center font-poppins my-8 mx-8 font-bold text-black text-3xl">
                 <MdOutlineExplore className="mr-2 text-secondaryBlue" />
-                Explore
+                {path ? path : "Explore"}
               </h1>
               <hr />
               <div className="mt-16 px-8 font-right text-md text-gray-800">
                 <div className="flex items-center duration-500 hover:text-gray-300">
-                  <MdOutlineTaskAlt /> <Link className="ml-2">Tasks</Link>
+                  <MdOutlineTaskAlt />{" "}
+                  <Link to="/tasks" className="ml-2">
+                    Tasks
+                  </Link>
                 </div>
                 <div className="flex items-center mt-8 duration-500 hover:text-gray-300">
-                  <GoProject /> <Link className="ml-2">Projects</Link>
+                  <GoProject />{" "}
+                  <Link to="/projects" className="ml-2">
+                    Projects
+                  </Link>
                 </div>
                 <div className="flex items-center mt-8 duration-500 hover:text-gray-300">
-                  <BiTimer /> <Link className="ml-2">Time Tracker</Link>
+                  <BiTimer />{" "}
+                  <Link to="/time-tracker" className="ml-2">
+                    Time Tracker
+                  </Link>
                 </div>
                 <div className="flex items-center mt-8 duration-500 hover:text-gray-300">
-                  <SiGoogleanalytics /> <Link className="ml-2">Analytics</Link>
+                  <SiGoogleanalytics />{" "}
+                  <Link to="/analytics" className="ml-2">
+                    Analytics
+                  </Link>
                 </div>
                 <div className="flex items-center mt-8 duration-500 hover:text-gray-300">
-                  <FiSettings /> <Link className="ml-2">Settings</Link>
+                  <FiSettings />{" "}
+                  <Link to="/settings" className="ml-2">
+                    Settings
+                  </Link>
                 </div>
               </div>
             </div>

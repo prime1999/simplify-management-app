@@ -5,7 +5,7 @@ const cors = require("cors");
 const taskRoutes = require("./routes/taskRoutes");
 const userRoutes = require("./routes/userRoutes");
 const connectDb = require("./config/db");
-const { errorhandler } = require("./middleware/errorMiddleware");
+const { errorHandler } = require("./middleware/errorMiddleware");
 
 //create express app
 const app = express();
@@ -24,7 +24,7 @@ app.use("/api/user", userRoutes);
 connectDb();
 
 // middleware for handling errors
-app.use(errorhandler);
+app.use(errorHandler);
 
 //listen to request
 app.listen(process.env.PORT, () => {

@@ -13,15 +13,30 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import LogIn from "./pages/LogIn";
 import PrivateRoute from "./components/PrivateRoute";
+import Tasks from "./pages/Tasks";
+import TasksCategories from "./pages/TasksCategories";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<PrivateRoute />}>
-        <Route path="/" element={<RootLayout />}>
+      {/* explore route */}
+      <Route path="/" element={<RootLayout />}>
+        <Route path="/" element={<PrivateRoute />}>
           <Route index element={<Dashboard />} />
+          {/* tasks route */}
+          <Route path="/tasks" element={<PrivateRoute />}>
+            <Route path="/tasks" element={<Tasks />} />
+          </Route>
+          {/* tasks category route */}
+          <Route path="/tasks/category/:value" element={<PrivateRoute />}>
+            <Route
+              path="/tasks/category/:value"
+              element={<TasksCategories />}
+            />
+          </Route>
         </Route>
       </Route>
+      {/* Authorization route */}
       <Route path="/getting-started" element={<Home />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<LogIn />} />
