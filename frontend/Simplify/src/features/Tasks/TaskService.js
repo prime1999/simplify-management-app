@@ -26,6 +26,31 @@ export const createTask = async (token, taskData) => {
   return res.data;
 };
 
+// get a single task task
+export const getTask = async (token, id) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const res = await axios.get(`${API_URL}/${id}`, config);
+
+  return res.data;
+};
+
+// update task
+export const updateTask = async (token, updatedData, id) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.patch(`${API_URL}/${id}`, updatedData, config);
+
+  return res.data;
+};
+
 // delete task
 export const deleteTask = async (token, id) => {
   const config = {
@@ -34,11 +59,10 @@ export const deleteTask = async (token, id) => {
     },
   };
   const res = await axios.delete(`${API_URL}/${id}`, config);
-  console.log(res.data);
 
   return res.data;
 };
 
-const taskService = { getTasks, createTask, deleteTask };
+const taskService = { getTasks, getTask, createTask, updateTask, deleteTask };
 
 export default taskService;

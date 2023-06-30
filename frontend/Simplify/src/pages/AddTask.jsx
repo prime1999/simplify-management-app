@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { toast } from "react-toastify";
 import Menu from "@mui/material/Menu";
@@ -29,8 +29,6 @@ const AddTask = () => {
   );
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
-
   // functions for the menuItem
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget);

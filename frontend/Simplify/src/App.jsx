@@ -16,6 +16,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import Tasks from "./pages/Tasks";
 import TasksCategories from "./pages/TasksCategories";
 import AddTask from "./pages/AddTask";
+import UpdateTask from "./pages/UpdateTask";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -38,6 +39,10 @@ const router = createBrowserRouter(
           {/* adding task route */}
           <Route path="/add-task" element={<PrivateRoute />}>
             <Route path="/add-task" element={<AddTask />} />
+          </Route>
+          {/* update task route */}
+          <Route path="/update-task/:taskId" element={<PrivateRoute />}>
+            <Route path="/update-task/:taskId" element={<UpdateTask />} />
           </Route>
         </Route>
       </Route>

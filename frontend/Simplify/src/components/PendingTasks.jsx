@@ -45,7 +45,9 @@ const PendingTasks = ({ taskStatus }) => {
                   onClick={handleOpen}
                   className="text-green-500 hover:cursor-pointer"
                 />
-                <BiEdit className="text-green-500 ml-4 text-xl hover:cursor-pointer" />
+                <Link to={`/update-task/${task._id}`}>
+                  <BiEdit className="text-green-500 ml-4 text-xl hover:cursor-pointer" />
+                </Link>
               </div>
             </div>
             <div className="flex items-center justify-between mt-8">

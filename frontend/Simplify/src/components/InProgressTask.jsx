@@ -48,7 +48,9 @@ const InProgressTask = ({ taskStatus }) => {
                   onClick={() => handleOpen()}
                   className="text-blue hover:cursor-pointer"
                 />
-                <BiEdit className="text-blue ml-4 text-xl hover:cursor-pointer" />
+                <Link to={`/update-task/${task._id}`}>
+                  <BiEdit className="text-blue ml-4 text-xl hover:cursor-pointer" />
+                </Link>
               </div>
             </div>
             <div className="flex items-center justify-between mt-8">

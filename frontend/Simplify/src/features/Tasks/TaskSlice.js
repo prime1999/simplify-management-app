@@ -54,6 +54,51 @@ export const createTask = createAsyncThunk(
   }
 );
 
+//get a single task
+export const getTask = createAsyncThunk(
+  "tasks/getTask",
+  async (id, thunkAPI) => {
+    try {
+      // await on the get tasks function in the task service component
+      const token = thunkAPI.getState().auth.user.token;
+      return await taskService.getTask(token, id);
+    } catch (error) {
+      // assign an error value if there is one in any of the listed error value holders below
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      // return the errror message using the thunkapi rejectwithvalue
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+//update task
+export const updateTask = createAsyncThunk(
+  "tasks/updateTask",
+  async ({ updatedData, id }, thunkAPI) => {
+    console.log(id, updatedData);
+    try {
+      // await on the get tasks function in the task service component
+      const token = thunkAPI.getState().auth.user.token;
+      return await taskService.updateTask(token, updatedData, id);
+    } catch (error) {
+      // assign an error value if there is one in any of the listed error value holders below
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      // return the errror message using the thunkapi rejectwithvalue
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 //delete task
 export const deleteTask = createAsyncThunk(
   "tasks/deleteTask",
@@ -97,6 +142,19 @@ export const taskSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
+      .addCase(getTask.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getTask.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.task = action.payload;
+      })
+      .addCase(getTask.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
       .addCase(createTask.pending, (state) => {
         state.isLoading = true;
       })
@@ -106,6 +164,21 @@ export const taskSlice = createSlice({
         state.isError = false;
       })
       .addCase(createTask.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(updateTask.pending, (state) => {
+        state.isLoading = true;
+        state.isSuccess = false;
+      })
+      .addCase(updateTask.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.task = action.payload;
+      })
+      .addCase(updateTask.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
