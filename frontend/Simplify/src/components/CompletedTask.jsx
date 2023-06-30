@@ -1,11 +1,19 @@
-import React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { BsTrash3Fill } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
 import { format } from "date-fns";
+import DeleteModal from "./deleteModal";
 
 const CompletedTask = ({ taskStatus }) => {
+  // modal states
+  const [open, setOpen] = useState(false);
+  // function to open the modal
+  const handleOpen = () => {
+    setOpen(true);
+  };
   const { completed } = taskStatus;
+
   return (
     <>
       <div className="w-1/3 rounded-2xl mx-4" id="completed">
@@ -28,13 +36,16 @@ const CompletedTask = ({ taskStatus }) => {
                 <h4 className="text-lg">{task?.title}</h4>
                 <p
                   style={{ backgroundColor: "rgba(255, 223, 223, 0.8)" }}
-                  className="text-red-400 w-14 rounded-2xl mt-2 px-2"
+                  className="text-red-400 rounded-2xl mt-2 px-2"
                 >
                   {task?.category}
                 </p>
               </div>
               <div className="flex items-center">
-                <BsTrash3Fill className="text-red-500 hover:cursor-pointer" />
+                <BsTrash3Fill
+                  onClick={handleOpen}
+                  className="text-red-500 hover:cursor-pointer"
+                />
                 <BiEdit className="text-red-500 ml-4 text-xl hover:cursor-pointer" />
               </div>
             </div>
@@ -43,6 +54,9 @@ const CompletedTask = ({ taskStatus }) => {
                 {format(new Date(task?.due_date), "MMMM d, yyyy")}
               </p>
               <Link className="text-lg">view</Link>
+            </div>
+            <div>
+              <DeleteModal open={open} setOpen={setOpen} task={task} />
             </div>
           </div>
         ))}

@@ -24,7 +24,7 @@ const AddTask = () => {
     due_date: "",
   });
   const [taskCreated, setTaskCreated] = useState(false);
-  const { isLoading, isSuccess, message, isError } = useSelector(
+  const { tasks, isLoading, isSuccess, message, isError } = useSelector(
     (state) => state.tasks
   );
   const dispatch = useDispatch();
@@ -95,6 +95,8 @@ const AddTask = () => {
       toast.error("Please fill in all fields");
     }
   };
+
+  console.log(tasks);
 
   if (isLoading) {
     return <Spinner />;
@@ -185,7 +187,7 @@ const AddTask = () => {
             <div className="flex items-center justify-between my-4">
               <div>
                 <label
-                  className={`px-4 py-2 rounded-2xl shadow-lg hover:cursor-pointer ${
+                  className={`px-4 py-2 rounded-2xl shadow-lg duration-500 ease-in-out hover:bg-blue hover:text-white hover:cursor-pointer ${
                     checkedValue === "home" ? "bg-blue text-white" : "bg-white"
                   }`}
                   htmlFor="home"
@@ -203,7 +205,7 @@ const AddTask = () => {
               </div>
               <div>
                 <label
-                  className={`px-4 py-2 rounded-2xl shadow-lg hover:cursor-pointer ${
+                  className={`px-4 py-2 rounded-2xl shadow-lg duration-500 ease-in-out hover:bg-blue hover:text-white hover:cursor-pointer ${
                     checkedValue === "work" ? "bg-blue text-white" : "bg-white"
                   }`}
                   htmlFor="work"
@@ -221,7 +223,7 @@ const AddTask = () => {
               </div>
               <div>
                 <label
-                  className={`px-4 py-2 rounded-2xl shadow-lg hover:cursor-pointer ${
+                  className={`px-4 py-2 rounded-2xl shadow-lg duration-500 ease-in-out hover:bg-blue hover:text-white hover:cursor-pointer ${
                     checkedValue === "family"
                       ? "bg-blue text-white"
                       : "bg-white"
@@ -241,7 +243,7 @@ const AddTask = () => {
               </div>
               <div>
                 <label
-                  className={`px-4 py-2 rounded-2xl shadow-lg hover:cursor-pointer ${
+                  className={`px-4 py-2 rounded-2xl shadow-lg duration-500 ease-in-out hover:bg-blue hover:text-white hover:cursor-pointer ${
                     checkedValue === "personal"
                       ? "bg-blue text-white"
                       : "bg-white"
@@ -261,7 +263,7 @@ const AddTask = () => {
               </div>
               <div>
                 <label
-                  className={`px-4 py-2 rounded-2xl shadow-lg hover:cursor-pointer ${
+                  className={`px-4 py-2 rounded-2xl shadow-lg duration-500 ease-in-out hover:bg-blue hover:text-white hover:cursor-pointer ${
                     checkedValue === "education"
                       ? "bg-blue text-white"
                       : "bg-white"
@@ -283,7 +285,7 @@ const AddTask = () => {
             <div className="flex items-center justify-between mt-8">
               <div>
                 <label
-                  className={`px-4 py-2 rounded-2xl shadow-lg hover:cursor-pointer ${
+                  className={`px-4 py-2 rounded-2xl shadow-lg duration-500 ease-in-out hover:bg-blue hover:text-white hover:cursor-pointer ${
                     checkedValue === "social"
                       ? "bg-blue text-white"
                       : "bg-white"
@@ -303,7 +305,7 @@ const AddTask = () => {
               </div>
               <div>
                 <label
-                  className={`px-4 py-2 rounded-2xl shadow-lg hover:cursor-pointer ${
+                  className={`px-4 py-2 rounded-2xl shadow-lg duration-500 ease-in-out hover:bg-blue hover:text-white hover:cursor-pointer ${
                     checkedValue === "travel"
                       ? "bg-blue text-white"
                       : "bg-white"
@@ -323,7 +325,7 @@ const AddTask = () => {
               </div>
               <div>
                 <label
-                  className={`px-4 py-2 rounded-2xl shadow-lg hover:cursor-pointer ${
+                  className={`px-4 py-2 rounded-2xl shadow-lg duration-500 ease-in-out hover:bg-blue hover:text-white hover:cursor-pointer ${
                     checkedValue === "financial"
                       ? "bg-blue text-white"
                       : "bg-white"
@@ -343,7 +345,7 @@ const AddTask = () => {
               </div>
               <div>
                 <label
-                  className={`px-4 py-2 rounded-2xl shadow-lg hover:cursor-pointer ${
+                  className={`px-4 py-2 rounded-2xl shadow-lg duration-500 ease-in-out hover:bg-blue hover:text-white hover:cursor-pointer ${
                     checkedValue === "miscellaneous"
                       ? "bg-blue text-white"
                       : "bg-white"

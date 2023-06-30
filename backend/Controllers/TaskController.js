@@ -53,7 +53,9 @@ const createTask = asyncHandler(async (req, res) => {
   // get all tasks of the user
   const tasks = await task.find();
   // check if the task already exist
-  const taskExist = tasks.some((task) => task.title === title);
+  const taskExist = tasks.some(
+    (task) => task.title === title && task.status === status
+  );
   // throw error if task already exist
   if (taskExist) {
     res.status(400);

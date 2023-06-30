@@ -1,11 +1,18 @@
-import React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { BsTrash3Fill } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
 import { format } from "date-fns";
+import DeleteModal from "./deleteModal";
 
 const PendingTasks = ({ taskStatus }) => {
   const { pending } = taskStatus;
+  // modal states
+  const [open, setOpen] = useState(false);
+  // function to open the modal
+  const handleOpen = () => {
+    setOpen(true);
+  };
   return (
     <>
       <div className="w-1/3 rounded-2xl" id="pending">
@@ -34,7 +41,10 @@ const PendingTasks = ({ taskStatus }) => {
                 </p>
               </div>
               <div className="flex items-center">
-                <BsTrash3Fill className="text-green-500 hover:cursor-pointer" />
+                <BsTrash3Fill
+                  onClick={handleOpen}
+                  className="text-green-500 hover:cursor-pointer"
+                />
                 <BiEdit className="text-green-500 ml-4 text-xl hover:cursor-pointer" />
               </div>
             </div>
@@ -43,6 +53,9 @@ const PendingTasks = ({ taskStatus }) => {
                 {format(new Date(task?.due_date), "MMMM d, yyyy")}
               </p>
               <Link className="text-lg">view</Link>
+            </div>
+            <div>
+              <DeleteModal open={open} setOpen={setOpen} task={task} />
             </div>
           </div>
         ))}

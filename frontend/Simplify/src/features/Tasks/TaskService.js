@@ -22,11 +22,23 @@ export const createTask = async (token, taskData) => {
     },
   };
   const res = await axios.post(API_URL, taskData, config);
+
+  return res.data;
+};
+
+// delete task
+export const deleteTask = async (token, id) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const res = await axios.delete(`${API_URL}/${id}`, config);
   console.log(res.data);
 
   return res.data;
 };
 
-const taskService = { getTasks, createTask };
+const taskService = { getTasks, createTask, deleteTask };
 
 export default taskService;

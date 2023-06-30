@@ -54,6 +54,28 @@ export const createTask = createAsyncThunk(
   }
 );
 
+//delete task
+export const deleteTask = createAsyncThunk(
+  "tasks/deleteTask",
+  async (id, thunkAPI) => {
+    try {
+      // await on the get tasks function in the task service component
+      const token = thunkAPI.getState().auth.user.token;
+      return await taskService.deleteTask(token, id);
+    } catch (error) {
+      // assign an error value if there is one in any of the listed error value holders below
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      // return the errror message using the thunkapi rejectwithvalue
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const taskSlice = createSlice({
   name: "tasks",
   initialState,
@@ -84,6 +106,22 @@ export const taskSlice = createSlice({
         state.isError = false;
       })
       .addCase(createTask.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(deleteTask.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteTask.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.tasks = state.tasks?.filter(
+          (task) => task._id !== action.payload._id
+        );
+      })
+      .addCase(deleteTask.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
