@@ -77,7 +77,7 @@ const createTask = asyncHandler(async (req, res) => {
 
 //function to search task
 const searchTask = asyncHandler(async (req, res) => {
-  const search = req.query;
+  const search = req.query.title;
   //check if user exist
   const userExist = await user.findById(req.user.id);
   // throw error if user does not exist
@@ -85,8 +85,13 @@ const searchTask = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Not Authorized");
   }
-  // search for task
-  const tasks = await task.find(search);
+
+  // Convert the search query to a case-insensitive regex
+  const searchRegex = new RegExp(search, "i");
+
+  // Search for tasks using the case-insensitive regex
+  const tasks = await task.find({ title: searchRegex });
+
   res.status(200).json(tasks);
   // throw error if task does not exist
   if (!tasks) {

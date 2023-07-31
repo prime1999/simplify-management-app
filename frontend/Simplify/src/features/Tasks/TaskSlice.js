@@ -76,11 +76,54 @@ export const getTask = createAsyncThunk(
   }
 );
 
+//search for a task
+export const searchTask = createAsyncThunk(
+  "tasks/searchTask",
+  async (data, thunkAPI) => {
+    try {
+      // await on the get tasks function in the task service component
+      const token = thunkAPI.getState().auth.user.token;
+      return await taskService.searchTask(token, data);
+    } catch (error) {
+      // assign an error value if there is one in any of the listed error value holders below
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      // return the errror message using the thunkapi rejectwithvalue
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+//get tasks based on there category
+export const categorizeTask = createAsyncThunk(
+  "tasks/categorizeTask",
+  async (data, thunkAPI) => {
+    try {
+      // await on the get tasks function in the task service component
+      const token = thunkAPI.getState().auth.user.token;
+      return await taskService.categorizeTask(token, data);
+    } catch (error) {
+      // assign an error value if there is one in any of the listed error value holders below
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      // return the errror message using the thunkapi rejectwithvalue
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 //update task
 export const updateTask = createAsyncThunk(
   "tasks/updateTask",
   async ({ updatedData, id }, thunkAPI) => {
-    console.log(id, updatedData);
     try {
       // await on the get tasks function in the task service component
       const token = thunkAPI.getState().auth.user.token;
@@ -151,6 +194,32 @@ export const taskSlice = createSlice({
         state.task = action.payload;
       })
       .addCase(getTask.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(searchTask.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(searchTask.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.tasks = action.payload;
+      })
+      .addCase(searchTask.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(categorizeTask.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(categorizeTask.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.tasks = action.payload;
+      })
+      .addCase(categorizeTask.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

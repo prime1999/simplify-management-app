@@ -42,7 +42,6 @@ const AddTask = () => {
 
   // for chooseing the task status
   const handleSelector = (value) => {
-    console.log(value);
     setValue(value);
     setformData((prevState) => ({
       ...prevState,
@@ -75,9 +74,9 @@ const AddTask = () => {
       navigate("/tasks");
       dispatch(reset());
     }
-    if (isError) {
-      toast.error(message);
-    }
+    // if (isError) {
+    //   toast.error(message);
+    // }
     dispatch(reset());
     setTaskCreated(false);
   }, [taskCreated, isError, message, navigate, dispatch]);
@@ -93,8 +92,6 @@ const AddTask = () => {
       toast.error("Please fill in all fields");
     }
   };
-
-  console.log(tasks);
 
   if (isLoading) {
     return <Spinner />;

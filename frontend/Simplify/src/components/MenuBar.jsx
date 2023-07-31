@@ -1,24 +1,43 @@
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { BsPlus } from "react-icons/bs";
 import { RxMagnifyingGlass } from "react-icons/rx";
+import { searchTask } from "../features/Tasks/TaskSlice";
 
 const MenuBar = () => {
+  const { tasks } = useSelector((state) => state.tasks);
+  const dispatch = useDispatch();
+  const [searchValue, setSearchValue] = useState("");
+  // get the current url location of the page
   const location = useLocation();
+  // split the url into different using the /
   const pathSegments = location.pathname
     .split("/")
     .filter((segment) => segment !== "");
+  // get the tasks string from the url
   const tasksPath = pathSegments[0];
+  // make the task string capitalized if there is a tasksPath
+  const path = tasksPath
+    ? `${tasksPath.charAt(0).toUpperCase()}${tasksPath.slice(1)}`
+    : "";
+
+  const handleSearch = (e) => {
+    setSearchValue(e.target.value);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const value = searchValue.toLowerCase();
+    console.log(value);
+    dispatch(searchTask(value));
   };
+
   return (
     <div className="mt-8">
       <div className="flex items-center justify-between">
         <h1 className="text-black text-4xl font-poppins font-bold">
-          Active{" "}
-          <span className="text-gray-500">{tasksPath.toUpperCase()}</span>
+          Active <span className="text-gray-500">{path}</span>
         </h1>{" "}
         <form
           onSubmit={handleSubmit}
@@ -27,10 +46,15 @@ const MenuBar = () => {
           <div className="relative mr-4">
             <input
               type="text"
-              placeholder="Search..."
+              value={searchValue}
+              onChange={handleSearch}
+              placeholder="Search by title......"
               className="w-96 bg-white h-9 px-2 rounded-md focus:outline-none focus:border-b-2 focus:border-navyBlue focus:bg-transparent"
             />
-            <RxMagnifyingGlass className="absolute top-2 right-3 text-xl hover:cursor-pointer" />
+            <RxMagnifyingGlass
+              onClick={handleSubmit}
+              className="absolute top-2 right-3 text-xl hover:cursor-pointer"
+            />
           </div>
         </form>
         <div

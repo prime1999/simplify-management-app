@@ -67,7 +67,7 @@ const UpdateTask = () => {
   // to run after the submit function as been carried out
   useEffect(() => {
     if (taskCreated) {
-      toast.success("New task added");
+      toast.success("Task updated successfully");
       navigate("/tasks");
       dispatch(reset());
     }
@@ -124,13 +124,11 @@ const UpdateTask = () => {
   // function to submit the task
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(updatedData);
     if (title || description || due_date || category) {
       dispatch(updateTask({ updatedData: updatedData, id: taskId }));
       if (isSuccess) {
         setTaskCreated(true);
       }
-      console.log(isSuccess);
       dispatch(reset());
     }
   };
