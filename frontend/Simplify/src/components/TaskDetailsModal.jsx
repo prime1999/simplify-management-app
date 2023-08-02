@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import { BsFillSendCheckFill } from "react-icons/bs";
 import { Modal, Backdrop, Fade } from "@mui/material";
 import { format, formatDistance, parseISO } from "date-fns";
+import { useSelector, useDispatch } from "react-redux";
+import { createNotes, getNotes } from "../features/Notes/NotesSlice";
+import { getTimeDiff } from "../config/NotesLogic";
+import { toast } from "react-toastify";
 
 const TaskDetailsModal = ({ children, task }) => {
   const [open, setOpen] = useState(false);
@@ -14,6 +18,11 @@ const TaskDetailsModal = ({ children, task }) => {
   const [percent, setPercent] = useState(null);
   const [note, setNote] = useState("");
 
+  const dispatch = useDispatch();
+
+  const { notes, isLoading, message, isSuccess, isError } = useSelector(
+    (state) => state.notes
+  );
   useEffect(() => {
     let date = parseISO(task?.due_date);
     let newDate = format(date, "EE MM dd yyyy");
@@ -28,6 +37,23 @@ const TaskDetailsModal = ({ children, task }) => {
     const difference = formatDistance(today, date);
     setDateLeft(difference);
   }, []);
+
+  useEffect(() => {
+    dispatch(getNotes(task._id));
+  }, [dispatch, note]);
+
+  const AddNote = (e) => {
+    e.preventDefault();
+
+    try {
+      dispatch(createNotes({ taskId: task._id, note }));
+      setNote("");
+    } catch (error) {
+      if (isError) {
+        toast.error(message);
+      }
+    }
+  };
 
   return (
     <div>
@@ -50,25 +76,25 @@ const TaskDetailsModal = ({ children, task }) => {
               }}
             >
               <Fade in={open}>
-                <div className="absolute top-[10%] left-[33%] w-[500px] bg-white rounded-lg shadow-lg py-4">
+                <div className="absolute top-[2%] left-[33%] w-[500px] bg-white rounded-lg shadow-lg py-4">
                   <div className="font-poppins py-4 px-8">
                     <h1 className="font-bold text-3xl">{task.title}</h1>
-                    <div className="my-4">
+                    <div className="my-2">
                       <h3 className="text-lg font-bold mb-2">
                         Task Description
                       </h3>
                       <p className="">{task.description}</p>
                     </div>
                     <div className="w-1/2 my-8">
-                      <div className="flex justify-between items-center mb-4">
+                      <div className="flex justify-between items-center mb-2">
                         <h6 className="text-darkGray">category:</h6>
                         <p className="font-semibold">{task.category}</p>
                       </div>
-                      <div className="flex justify-between items-center mb-4">
+                      <div className="flex justify-between items-center mb-2">
                         <h6 className="text-darkGray">status:</h6>
                         <p
                           id={
-                            task.status === (completed || pending)
+                            task.status === ("pending" || "completed")
                               ? `${task.status}`
                               : "in_progress"
                           }
@@ -77,13 +103,13 @@ const TaskDetailsModal = ({ children, task }) => {
                           {task.status}
                         </p>
                       </div>
-                      <div className="flex justify-between items-center mb-4">
+                      <div className="flex justify-between items-center mb-2">
                         <h6 className="text-darkGray">due_date:</h6>
                         <p className="text-black font-semibold">
                           {task.due_date}
                         </p>
                       </div>
-                      <div className="flex justify-between items-center mb-4">
+                      <div className="flex justify-between items-center mb-2">
                         <h6 className="text-darkGray">Reminder:</h6>
                         <p className="text-black font-semibold">
                           {dateLeft} left
@@ -93,8 +119,16 @@ const TaskDetailsModal = ({ children, task }) => {
                   </div>
                   <hr className="border" />
                   <div className="py-4 px-8 font-poppins">
-                    <h1 className="text-lg font-semibold">Notes</h1>
-                    <form className="flex justify-between items-center mt-4">
+                    <div className="flex justify-between items-center">
+                      <h1 className="text-lg font-semibold">Notes</h1>
+                      <p className="text-gray-400">
+                        {notes ? notes.length : ""}
+                      </p>
+                    </div>
+                    <form
+                      onSubmit={AddNote}
+                      className="flex justify-between items-center mt-2"
+                    >
                       <input
                         type="text"
                         placeholder="note"
@@ -106,7 +140,21 @@ const TaskDetailsModal = ({ children, task }) => {
                         <BsFillSendCheckFill />
                       </button>
                     </form>
-                    {/* notes go here */}
+                    {notes && (
+                      <div className="h-[150px] p-2 mt-4 overflow-auto">
+                        {notes?.map((note) => (
+                          <div
+                            key={note._id}
+                            className="my-2 p-2 font-lato text-md bg-gray-100"
+                          >
+                            <p className="font-bold">{note.text}</p>
+                            <p className="text-sm text-gray-400">
+                              {getTimeDiff(note.createdAt)}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </Fade>

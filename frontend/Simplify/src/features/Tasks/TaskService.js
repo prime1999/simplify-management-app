@@ -10,7 +10,6 @@ export const getTasks = async (token) => {
     },
   };
   const res = await axios.get(API_URL, config);
-  console.log(res.data);
   return res.data;
 };
 

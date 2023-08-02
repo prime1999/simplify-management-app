@@ -62,9 +62,11 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <GiBookPile className="text-blue text-3xl" />
-            <h2 className="font-poppins font-bold text-3xl text-blue ml-2">
-              SIMPLIFY
-            </h2>
+            <Link to="/">
+              <h2 className="font-poppins font-bold text-3xl text-blue ml-2">
+                SIMPLIFY
+              </h2>
+            </Link>
           </div>
           {/* <form
             onSubmit={handleSubmit}

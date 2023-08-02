@@ -18,11 +18,13 @@ const Footer = () => {
       >
         <div className="flex justify-between">
           <div className="w-1/3">
-            <div className="flex items-center">
-              <GiBookPile className="text-blue text-3xl" />
-              <h2 className="font-poppins font-bold text-3xl text-blue ml-2">
-                SIMPLIFY
-              </h2>
+            <div className="">
+              <Link className="flex items-center" to="/">
+                <GiBookPile className="text-blue text-3xl" />
+                <h2 className="font-poppins font-bold text-3xl text-blue ml-2">
+                  SIMPLIFY
+                </h2>
+              </Link>
             </div>
             <p className="text-md mt-4 font-semibold">
               We will give you the easiet way to manage your day to day

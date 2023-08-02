@@ -15,7 +15,7 @@ const PendingTasks = ({ taskStatus }) => {
   };
   return (
     <>
-      {pending ? (
+      {pending?.length !== 0 ? (
         <div className="w-1/3 rounded-2xl" id="pending">
           <div className="flex items-center justify-between font-poppins font-semiBold py-4 px-8">
             <h1 className="text-green-500">

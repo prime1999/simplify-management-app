@@ -6,17 +6,17 @@ import { format } from "date-fns";
 import DeleteModal from "./deleteModal";
 
 const CompletedTask = ({ taskStatus }) => {
+  const { completed } = taskStatus;
   // modal states
   const [open, setOpen] = useState(false);
   // function to open the modal
   const handleOpen = () => {
     setOpen(true);
   };
-  const { completed } = taskStatus;
 
   return (
     <>
-      {completed ? (
+      {completed?.length !== 0 ? (
         <div className="w-1/3 rounded-2xl mx-4" id="completed">
           <div className="flex items-center justify-between font-poppins font-semiBold py-4 px-8">
             <h1 className="text-red-400">

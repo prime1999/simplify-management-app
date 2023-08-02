@@ -6,6 +6,7 @@ const taskRoutes = require("./routes/taskRoutes");
 const userRoutes = require("./routes/userRoutes");
 const connectDb = require("./config/db");
 const { errorHandler } = require("./middleware/errorMiddleware");
+const notesRoute = require("./routes/notesRoutes");
 
 //create express app
 const app = express();
@@ -19,6 +20,8 @@ app.use(cors());
 app.use("/api/tasks", taskRoutes);
 
 app.use("/api/user", userRoutes);
+
+app.use("/api/notes", notesRoute);
 
 //connect to db
 connectDb();

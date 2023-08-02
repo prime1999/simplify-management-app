@@ -1,5 +1,5 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import Drawer from "@mui/material/Drawer";
 import Navbar from "../components/Navbar";
@@ -9,24 +9,34 @@ import { FiSettings } from "react-icons/fi";
 import { GoProject } from "react-icons/go";
 import { BiTimer } from "react-icons/bi";
 import Footer from "../components/Footer";
+import { getTasks } from "../features/Tasks/TaskSlice";
 
 const drawerWidth = 240;
 
 const RootLayout = () => {
+  const [path, setPath] = useState("");
+  const dispatch = useDispatch();
   // get the tasks state from the task redux store
   const { tasks } = useSelector((state) => state.tasks);
   // get the current url location of the page
   const location = useLocation();
-  // split the url into different using the /
-  const pathSegments = location.pathname
-    .split("/")
-    .filter((segment) => segment !== "");
-  // get the tasks string from the url
-  const tasksPath = pathSegments[0];
-  // make the task string capitalized if there is a tasksPath
-  const path = tasksPath
-    ? `${tasksPath.charAt(0).toUpperCase()}${tasksPath.slice(1)}`
-    : "";
+  useEffect(() => {
+    // split the url into different using the /
+    const pathSegments = location.pathname
+      .split("/")
+      .filter((segment) => segment !== "");
+    // get the tasks string from the url
+    const tasksPath = pathSegments[0];
+    // make the task string capitalized if there is a tasksPath
+    const path = tasksPath
+      ? `${tasksPath.charAt(0).toUpperCase()}${tasksPath.slice(1)}`
+      : "";
+    setPath(path);
+  });
+
+  useEffect(() => {
+    dispatch(getTasks());
+  }, [dispatch]);
   return (
     <>
       <div className="flex">

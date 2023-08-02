@@ -6,14 +6,14 @@ const user = require("../Models/UserModels");
 //function to get all tasks
 const getTasks = asyncHandler(async (req, res) => {
   // check if the user who requested the tasks actually exists
-  const userExists = await user.findById(req.user.id);
+  const userExists = await user.findById(req.user._id);
   // throw an error if user does not exist
   if (!userExists) {
     res.status(401);
     throw new Error("Not Authorized");
   }
   // get all tasks of the user and arrange them in descending order of the created date
-  const tasks = await task.find({ user: req.user.id }).sort({ createdAt: -1 });
+  const tasks = await task.find({ user: req.user._id }).sort({ createdAt: -1 });
   res.status(200).json(tasks);
 });
 

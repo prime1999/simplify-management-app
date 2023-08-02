@@ -19,7 +19,7 @@ const InProgressTask = ({ taskStatus }) => {
 
   return (
     <>
-      {in_progress ? (
+      {in_progress?.length !== 0 ? (
         <div className="w-1/3 rounded-2xl" id="in_progress">
           <div className="flex items-center justify-between font-poppins font-semiBold py-4 px-8">
             <h1 className="text-blue">
