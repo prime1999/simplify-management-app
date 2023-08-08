@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 // register user
 const registerUser = asynchandler(async (req, res) => {
   // get user information form the request body
-  const { name, email, password } = req.body;
+  const { name, email, password, pic } = req.body;
   // check if any of the fields are empty
   if (!name || !email || !password) {
     res.status(404);
@@ -30,6 +30,7 @@ const registerUser = asynchandler(async (req, res) => {
     name,
     email,
     password: hashedpassword,
+    pic,
   });
 
   // send user details to the client with the token
@@ -67,11 +68,69 @@ const logUserIn = asynchandler(async (req, res) => {
       id: User._id,
       name: User.name,
       email: User.email,
+      pic: User.pic,
       token: generateToken(User._id),
     });
   } else {
     res.status(401);
     throw new Error("Not Authorized");
+  }
+});
+
+// search user
+const searchUsers = asynchandler(async (req, res) => {
+  // get the keyword from the search query
+  const keyword = req.query.search;
+  // if there is no keyword, throw error message
+  if (!keyword) {
+    res.status(401);
+    throw new Error("Invalid search");
+  }
+  // make a try-catch block
+  try {
+    // find users based on there name and email exceopt from the current user
+    const users = await user
+      .find({
+        $and: [
+          // check if the key word matches the name or email
+          {
+            $or: [
+              // use a regex to make the keyword case insensitive
+              { name: { $regex: keyword, $options: "i" } },
+              { email: { $regex: keyword, $options: "i" } },
+            ],
+          },
+          // check if the id of ther user is not equal to that of the current user
+          { _id: { $ne: req.user._id } },
+        ],
+      })
+      .exec();
+    // send the users/user found to the frontend
+    res.status(200);
+    res.send(users);
+  } catch (error) {
+    // if there is an error in the try block, throw the error message
+    res.status(400);
+    throw new Error("User not found");
+  }
+});
+
+const getUsers = asynchandler(async (req, res) => {
+  // make try-catch block
+  try {
+    // find all usersin the users collection
+    const users = await user.find();
+    // if no users was found, then throw error message
+    if (!users) {
+      throw new Error("No Users Found");
+    }
+    // send the users found to the frontend
+    res.status(200);
+    res.json(users);
+  } catch (error) {
+    // if there is any error in the try block then throw the error message
+    res.status(401);
+    throw new Error(error.message);
   }
 });
 
@@ -93,5 +152,7 @@ const generateToken = (_id) => {
 module.exports = {
   registerUser,
   logUserIn,
+  getUsers,
   getUser,
+  searchUsers,
 };

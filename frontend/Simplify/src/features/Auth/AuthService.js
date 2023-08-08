@@ -11,6 +11,18 @@ export const register = async (userData) => {
 
   return res.data;
 };
+// get users
+export const getUsers = async (token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const { data } = await axios.get(`${API_URL}/users`, config);
+
+  return { data };
+};
 
 // log user in
 export const logUserIn = async (userData) => {
@@ -18,7 +30,6 @@ export const logUserIn = async (userData) => {
   if (res.data) {
     localStorage.setItem("user", JSON.stringify(res.data));
   }
-  console.log(res.data);
   return res.data;
 };
 
@@ -27,6 +38,6 @@ const logout = async () => {
   localStorage.removeItem("user");
 };
 
-const authService = { register, logUserIn, logout };
+const authService = { register, logUserIn, getUsers, logout };
 
 export default authService;

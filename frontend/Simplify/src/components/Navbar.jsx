@@ -15,6 +15,7 @@ import { FiLogOut } from "react-icons/fi";
 import { BsBellFill } from "react-icons/bs";
 import { BsPersonCircle } from "react-icons/bs";
 import { logout, reset } from "../features/Auth/AuthSlice";
+import { Avatar } from "@mui/material";
 
 const Navbar = () => {
   // for the menuItem
@@ -128,7 +129,7 @@ const Navbar = () => {
               >
                 <IconButton>
                   <Link to="/profile" className="flex items-center">
-                    <BsPersonCircle className="text-2xl text-black" />{" "}
+                    <Avatar alt="user pic" src={user.pic} />
                     <p className="font-poppins ml-2 text-[17px] text-black">
                       {user?.name}
                     </p>

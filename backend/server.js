@@ -7,6 +7,8 @@ const userRoutes = require("./routes/userRoutes");
 const connectDb = require("./config/db");
 const { errorHandler } = require("./middleware/errorMiddleware");
 const notesRoute = require("./routes/notesRoutes");
+const projectRouter = require("./routes/projectRoutes");
+const teamRoute = require("./routes/teamRoutes");
 
 //create express app
 const app = express();
@@ -22,6 +24,10 @@ app.use("/api/tasks", taskRoutes);
 app.use("/api/user", userRoutes);
 
 app.use("/api/notes", notesRoute);
+
+app.use("/api/projects", projectRouter);
+
+app.use("/api/teams", teamRoute);
 
 //connect to db
 connectDb();

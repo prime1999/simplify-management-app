@@ -7,6 +7,11 @@ import DeleteModal from "./deleteModal";
 import TaskDetailsModal from "./TaskDetailsModal";
 
 const InProgressTask = ({ taskStatus }) => {
+  const { in_progress } = taskStatus;
+  // task details modal state
+  const [openDetails, setOpenDetails] = useState(false);
+  const handleOpenDetails = () => setOpenDetails(true);
+  const handleCloseDetails = () => setOpenDetails(false);
   // modal states
   const [open, setOpen] = useState(false);
   // function to open the modal
@@ -14,8 +19,6 @@ const InProgressTask = ({ taskStatus }) => {
     setOpen(true);
     //handleDelete(id);
   };
-
-  const { in_progress } = taskStatus;
 
   return (
     <>
@@ -40,7 +43,7 @@ const InProgressTask = ({ taskStatus }) => {
                   <h4 className="text-lg">{task?.title}</h4>
                   <p
                     style={{ backgroundColor: "rgba(162, 162, 255, 0.2)" }}
-                    className="text-blue text-center rounded-2xl mt-2 px-2"
+                    className="text-blue w-auto text-center rounded-2xl mt-2 px-2"
                   >
                     {task?.category}
                   </p>
@@ -59,9 +62,16 @@ const InProgressTask = ({ taskStatus }) => {
                 <p className="text-gray-400 text-md">
                   {format(new Date(task?.due_date), "MMMM d, yyyy")}
                 </p>
-                <TaskDetailsModal task={task}>
-                  <Link className="text-lg">view</Link>
-                </TaskDetailsModal>
+                <button onClick={handleOpenDetails} className="text-lg">
+                  view
+                </button>
+                {openDetails && (
+                  <TaskDetailsModal
+                    task={task}
+                    open={openDetails}
+                    handleClose={handleCloseDetails}
+                  />
+                )}
               </div>
               <div>
                 <DeleteModal open={open} setOpen={setOpen} task={task} />

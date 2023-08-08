@@ -7,7 +7,6 @@ const Note = require("../Models/NotesModel");
 const getNotes = asyncHandler(async (req, res) => {
   const User = await user.findById(req.user._id);
 
-  console.log(req.user._id);
   if (!User) {
     res.status(401);
     throw new Error("Unauthorized User");

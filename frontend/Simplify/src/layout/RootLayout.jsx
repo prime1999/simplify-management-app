@@ -5,7 +5,7 @@ import Drawer from "@mui/material/Drawer";
 import Navbar from "../components/Navbar";
 import { MdOutlineTaskAlt, MdOutlineExplore } from "react-icons/md";
 import { SiGoogleanalytics } from "react-icons/si";
-import { FiSettings } from "react-icons/fi";
+import { LuMessagesSquare } from "react-icons/lu";
 import { GoProject } from "react-icons/go";
 import { BiTimer } from "react-icons/bi";
 import Footer from "../components/Footer";
@@ -81,6 +81,12 @@ const RootLayout = () => {
                   </Link>
                 </div>
                 <div className="flex items-center mt-8 duration-500 hover:text-gray-300">
+                  <LuMessagesSquare />{" "}
+                  <Link to="/chat" className="ml-2">
+                    Chat-room
+                  </Link>
+                </div>
+                <div className="flex items-center mt-8 duration-500 hover:text-gray-300">
                   <BiTimer />{" "}
                   <Link to="/time-tracker" className="ml-2">
                     Time Tracker
@@ -92,12 +98,6 @@ const RootLayout = () => {
                     Analytics
                   </Link>
                 </div>
-                <div className="flex items-center mt-8 duration-500 hover:text-gray-300">
-                  <FiSettings />{" "}
-                  <Link to="/settings" className="ml-2">
-                    Settings
-                  </Link>
-                </div>
               </div>
             </div>
           </div>
@@ -105,7 +105,7 @@ const RootLayout = () => {
         <div
           style={{
             width: `calc(100% - ${drawerWidth}px)`,
-            backgroundColor: "rgba(135,206,235, 0.05)",
+            backgroundColor: "rgba(211, 211, 211, 0.1)",
 
             ml: `${drawerWidth}px`,
           }}

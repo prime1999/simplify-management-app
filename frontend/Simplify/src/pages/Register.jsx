@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import { GiBookPile } from "react-icons/gi";
+import { AiFillCamera } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { register, reset } from "../features/Auth/AuthSlice";
 import { toast } from "react-toastify";
+import Avatar from "@mui/material/Avatar";
+import Spinner from "../components/Spinner";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +16,10 @@ const Register = () => {
     password: "",
     password2: "",
   });
+  const [pic, setPic] = useState(
+    "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
+  );
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // destructure the auth initialstate properties form the initialstae in the authslice using the useSelector hook
@@ -43,6 +51,40 @@ const Register = () => {
       [e.target.id]: e.target.value,
     }));
   };
+
+  const postUserAvatar = async (pics) => {
+    setLoading(true);
+
+    if (!pics) {
+      toast.error("Please select an image");
+
+      setLoading(false);
+      return;
+    }
+
+    try {
+      if (pics.type === "image/jpeg" || pics.type === "image/png") {
+        // set an instance of the FormData
+        const picsData = new FormData();
+        // append the following key-value pairs to it
+        picsData.append("file", pics);
+        picsData.append("upload_preset", "chat-app");
+        picsData.append("cloud_name", "ddboi173o");
+        // send the data(your new FormData with the required data) to your cloudinary url
+        const { data } = await axios.post(
+          "https://api.cloudinary.com/v1_1/ddboi173o/image/upload",
+          picsData
+        );
+
+        setPic(data.url.toString());
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      toast.error("Upload image again");
+    }
+  };
+
   // Form subimtion function
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -52,6 +94,7 @@ const Register = () => {
         name,
         email,
         password,
+        pic,
       };
       // dispatch the user data filled in for registration to the register function in the authslice
       dispatch(register(userData));
@@ -62,7 +105,7 @@ const Register = () => {
     <>
       <div className="w-full h-screen mx-auto flex items-center justify-center">
         <div className="w-full h-full mx-auto flex items-center justify-center">
-          <div className="w-1/3 h-[570px] p-8 bg-white shadow-lg">
+          <div className="w-1/3 h-[600px] p-8 bg-white shadow-lg">
             <form onSubmit={handleSubmit}>
               <div className="flex items-center text-navyBlue text-3xl">
                 <GiBookPile className="" />
@@ -70,10 +113,39 @@ const Register = () => {
                   Simplify
                 </h2>
               </div>
-              <div className="mt-16">
+              <div className="mt-4">
                 <h3 className="font-poopins font-bold text-3xl text-navyBlue">
                   Create An Account
                 </h3>
+                <div>
+                  <label
+                    className="flex items-center justify-center mt-4 relative"
+                    htmlFor="userAvatar"
+                  >
+                    {loading ? (
+                      <>
+                        <Spinner />
+                      </>
+                    ) : (
+                      <>
+                        {" "}
+                        <Avatar
+                          sx={{ width: "70px", height: "70px" }}
+                          alt="user avatar"
+                          src={pic}
+                        ></Avatar>
+                        <AiFillCamera className="absolute text-3xl top-[60%] right-[40%] cursor-pointer" />
+                      </>
+                    )}
+                  </label>
+                  <input
+                    id="userAvatar"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => postUserAvatar(e.target.files[0])}
+                    className="hidden"
+                  />
+                </div>
                 <div className="flex flex-col">
                   <input
                     type="text"

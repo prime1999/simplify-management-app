@@ -4,6 +4,8 @@ const {
   registerUser,
   logUserIn,
   getUser,
+  searchUsers,
+  getUsers,
 } = require("../Controllers/UserController");
 
 const router = express.Router();
@@ -14,5 +16,9 @@ router.post("/", registerUser);
 router.post("/login", logUserIn);
 // get user details
 router.get("/me", protect, getUser);
+// search user details
+router.get("/", protect, searchUsers);
+// get Users
+router.get("/users", protect, getUsers);
 
 module.exports = router;

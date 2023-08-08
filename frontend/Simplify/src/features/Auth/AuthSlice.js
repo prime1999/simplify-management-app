@@ -5,6 +5,7 @@ import authService from "./AuthService";
 const user = JSON.parse(localStorage.getItem("user"));
 
 const initialState = {
+  users: null,
   user: user ? user : null,
   message: "",
   isError: false,
@@ -54,6 +55,24 @@ export const logUserIn = createAsyncThunk(
   }
 );
 
+// get all users
+export const getUsers = createAsyncThunk("auth/users", async (_, thunkAPI) => {
+  try {
+    // get the token from the user in the auth state
+    const token = thunkAPI.getState().auth.user.token;
+
+    // await on the get users function in the auth service component
+    return await authService.getUsers(token);
+  } catch (error) {
+    // assign an error value if there is one in any of the listed error value holders below
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    // return the errror message using the thunkapi rejectwithvalue
+    return thunkAPI.rejectWithValue(message);
+  }
+});
 // log user out
 export const logout = createAsyncThunk("auth/logout", async () => {
   await authService.logout();
@@ -100,6 +119,21 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.user = null;
+        state.message = action.payload;
+      })
+      // for getting all users
+      .addCase(getUsers.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getUsers.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.users = action.payload;
+      })
+      .addCase(getUsers.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.users = null;
         state.message = action.payload;
       })
       // for log out

@@ -4,9 +4,14 @@ import { BsTrash3Fill } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
 import { format } from "date-fns";
 import DeleteModal from "./deleteModal";
+import TaskDetailsModal from "./TaskDetailsModal";
 
 const PendingTasks = ({ taskStatus }) => {
   const { pending } = taskStatus;
+  // task details modal state
+  const [openDetails, setOpenDetails] = useState(false);
+  const handleOpenDetails = () => setOpenDetails(true);
+  const handleCloseDetails = () => setOpenDetails(false);
   // modal states
   const [open, setOpen] = useState(false);
   // function to open the modal
@@ -36,7 +41,7 @@ const PendingTasks = ({ taskStatus }) => {
                   <h4 className="text-lg">{task?.title}</h4>
                   <p
                     style={{ backgroundColor: "rgba(112, 234, 99, 0.2)" }}
-                    className="text-green-500 w-14 rounded-2xl mt-2 px-2"
+                    className="text-green-500 w-auto rounded-2xl mt-2 px-2"
                   >
                     {task?.category}
                   </p>
@@ -55,7 +60,16 @@ const PendingTasks = ({ taskStatus }) => {
                 <p className="text-gray-400 text-md">
                   {format(new Date(task?.due_date), "MMMM d, yyyy")}
                 </p>
-                <Link className="text-lg">view</Link>
+                <button onClick={handleOpenDetails} className="text-lg">
+                  view
+                </button>
+                {openDetails && (
+                  <TaskDetailsModal
+                    task={task}
+                    open={openDetails}
+                    handleClose={handleCloseDetails}
+                  />
+                )}
               </div>
               <div>
                 <DeleteModal open={open} setOpen={setOpen} task={task} />

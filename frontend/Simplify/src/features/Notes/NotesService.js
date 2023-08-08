@@ -26,7 +26,7 @@ const createNotes = async (taskId, note, token) => {
     { text: note },
     config
   );
-  console.log(data);
+
   return data;
 };
 

@@ -36,6 +36,10 @@ const taskSchema = new Schema(
       type: String,
       default: "pending",
     },
+    status: {
+      type: String,
+      default: "pending",
+    },
     due_date: {
       type: String,
       required: true,

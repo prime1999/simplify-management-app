@@ -13,6 +13,7 @@ const initialState = {
 export const getNotes = createAsyncThunk(
   "notes/getNotes",
   async (taskId, thunkAPI) => {
+    // console.log(taskId);
     try {
       const token = thunkAPI.getState().auth.user.token;
       return await noteService.getNotes(taskId, token);
