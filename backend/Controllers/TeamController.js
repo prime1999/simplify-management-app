@@ -8,9 +8,9 @@ const createTeam = asyncHandler(async (req, res) => {
   // check if the current user is in the database
   const userExist = await user.findById(req.user._id);
   // get the details sent by the user from the request body
-  const { name, description, member, teamLeader } = req.body;
+  const { name, description, members } = req.body;
 
-  if (!name || !description || !member || !teamLeader) {
+  if (!name || !description || !members) {
     throw new Error("Invalid data");
   }
   // make a try-catch block
@@ -21,13 +21,13 @@ const createTeam = asyncHandler(async (req, res) => {
     }
 
     // parse the member to a javasript array and store it in the participants variable
-    const participants = JSON.parse(member);
+    const participants = JSON.parse(members);
     // create a new team object with the necessary details needed by the database
     const newTeam = {
       name,
       description,
       members: [...participants, req.user._id],
-      teamLeader,
+      teamLeader: req.user._id,
       createdBy: req.user._id,
       projects: null,
     };

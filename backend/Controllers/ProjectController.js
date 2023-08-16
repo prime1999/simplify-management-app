@@ -7,7 +7,7 @@ const Team = require("../Models/TeamModel");
 // -------------------------- function to create projects ------------------------- //
 const createProject = asyncHandler(async (req, res) => {
   // get the projects details sent by the users from the request body
-  const { title, description, status, startDate, endDate, teamId } = req.body;
+  const { title, description, status, startDate, endDate } = req.body;
   // find the user by its id from the user database
   const userExist = await user.findById(req.user._id);
   // if the user does not exist throw the error message
@@ -25,7 +25,6 @@ const createProject = asyncHandler(async (req, res) => {
     }
 
     // const users = JSON.parse(participants);
-
     // find the projects in the project database
     const projects = await Project.find();
     // check if any iof the projects found has the same title and status as the details sent by the user
@@ -37,11 +36,7 @@ const createProject = asyncHandler(async (req, res) => {
       res.status(401);
       throw new Error("project already exist");
     }
-    // check if the team has been created
-    let team = null;
-    if (teamId) {
-      team = await Team.findById(teamId);
-    }
+
     // if it doesn't exist then create a projects using th details from the frontend
     const project = await Project.create({
       user: req.user._id,
@@ -50,10 +45,9 @@ const createProject = asyncHandler(async (req, res) => {
       status,
       startDate,
       endDate,
-      participants: team ? [...team.members] : null,
-      team: team._id,
+      participants: null,
+      team: null,
     });
-    console.log(project);
     // after project has been created, send it to the frontend with a status code of 201
     res.status(201);
     res.json(project);
@@ -264,12 +258,17 @@ const assignTeam = asyncHandler(async (req, res) => {
       throw new Error("Team Not Found");
     }
 
-    const projectList = [];
-
-    projectList.push(projectId);
-
     // update the team to include the project
-    await Team.findOneAndUpdate({ _id: teamId }, { projects: projectList });
+    await Team.findOneAndUpdate(
+      { _id: teamId }, // then update the users array to push the new user to be added to the array
+      {
+        $push: { projects: projectId },
+      },
+      // set new to true for it to work
+      {
+        new: true,
+      }
+    );
 
     const updatedProject = await Project.findOneAndUpdate(
       { _id: projectId },

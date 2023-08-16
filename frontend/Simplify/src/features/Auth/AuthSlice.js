@@ -7,6 +7,7 @@ const user = JSON.parse(localStorage.getItem("user"));
 const initialState = {
   users: null,
   user: user ? user : null,
+  userList: [],
   message: "",
   isError: false,
   isSuccess: false,
@@ -73,10 +74,44 @@ export const getUsers = createAsyncThunk("auth/users", async (_, thunkAPI) => {
     return thunkAPI.rejectWithValue(message);
   }
 });
+
+// ----------------------------- function to search for a user -------------------- //
+export const searchUser = createAsyncThunk(
+  "auth/searchUser",
+  async (user, thunkAPI) => {
+    try {
+      // get the token from the user in the auth state
+      const token = thunkAPI.getState().auth.user.token;
+
+      // await on the search for a user function in the auth service component
+      return await authService.searchUser(user, token);
+    } catch (error) {
+      // assign an error value if there is one in any of the listed error value holders below
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      // return the errror message using the thunkapi rejectwithvalue
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 // log user out
 export const logout = createAsyncThunk("auth/logout", async () => {
   await authService.logout();
 });
+
+// ------------------------------------- function to select user ------------------------ //
+export const selectUser = createAsyncThunk(
+  "auth/selectUser",
+  (user, thunkAPI) => {
+    const userList = thunkAPI.getState().auth.userList.slice(); // Make a copy of the current userList
+    return authService.selectUser(userList, user);
+  }
+);
 
 // create the slice (auth slice)
 export const authSlice = createSlice({
@@ -135,6 +170,25 @@ export const authSlice = createSlice({
         state.isError = true;
         state.users = null;
         state.message = action.payload;
+      })
+      // for searching for a user
+      .addCase(searchUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(searchUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.users = action.payload;
+      })
+      .addCase(searchUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.users = null;
+        state.message = action.payload;
+      })
+      // for selecting a user
+      .addCase(selectUser.fulfilled, (state, action) => {
+        state.userList.push(action.payload);
       })
       // for log out
       .addCase(logout.fulfilled, (state) => {

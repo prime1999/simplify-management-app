@@ -104,6 +104,7 @@ const searchUsers = asynchandler(async (req, res) => {
           { _id: { $ne: req.user._id } },
         ],
       })
+      .select("-password") // Exclude the password field
       .exec();
     // send the users/user found to the frontend
     res.status(200);
