@@ -32,6 +32,28 @@ export const createProject = createAsyncThunk(
   }
 );
 
+// ------------------------------ get user's projects ----------------------------------- //
+export const getProjects = createAsyncThunk(
+  "projects/getProjects",
+  async (_, thunkAPI) => {
+    try {
+      // await on the create project function in the project service component
+      const token = thunkAPI.getState().auth.user.token;
+      return await projectService.getProjects(token);
+    } catch (error) {
+      // assign an error value if there is one in any of the listed error value holders below
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      // return the errror message using the thunkapi rejectwithvalue
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 // ------------------------------ assign a team to project ----------------------------------- //
 export const assignTeam = createAsyncThunk(
   "projects/assignTeam",
@@ -70,9 +92,23 @@ export const projectSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        state.project = action.payload;
       })
       .addCase(createProject.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      // get projects
+      .addCase(getProjects.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getProjects.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.projects = action.payload;
+      })
+      .addCase(getProjects.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

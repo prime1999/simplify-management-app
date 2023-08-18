@@ -71,7 +71,7 @@ const CreateProjectModal = () => {
     // if the projectCCreated state is tru then
     if (projectCreated) {
       // show a success message toast
-      toast.success("Project created, DO assign a team when ready!");
+      toast.info("Project created, DO assign a team when ready!");
       // close the modal
       handleCloseModal();
       dispatch(reset());
@@ -110,11 +110,13 @@ const CreateProjectModal = () => {
       // set the project created state value to true
       setProjectCreated(true);
       // clear fields
-      title = "";
-      description = "";
-      status = "";
-      start_date = "";
-      end_date = "";
+      setformData({
+        title: "",
+        description: "",
+        status: "",
+        start_date: "",
+        end_date: "",
+      });
     } else {
       // if one or all fields was not filled then show the toast error with the message
       toast.error("Please fill in all fields");

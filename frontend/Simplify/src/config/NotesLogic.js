@@ -1,4 +1,4 @@
-import { formatDistance } from "date-fns";
+import { formatDistance, format } from "date-fns";
 
 export const getTimeDiff = (targetDate) => {
   const formatedTIme = formatDistance(new Date(targetDate), new Date(), {

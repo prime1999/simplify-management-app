@@ -14,6 +14,18 @@ const createProject = async (token, projectData) => {
   return data;
 };
 
+// ---------------------------------function to get user's projects------------------------------- //
+const getProjects = async (token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const { data } = await axios.get(API_URL, config);
+  return data;
+};
+
 // ----------------------------- function to assign a team ------------------------------- //
 const assignTeam = async (details, token) => {
   const config = {
@@ -29,6 +41,7 @@ const assignTeam = async (details, token) => {
 
 const projectService = {
   createProject,
+  getProjects,
   assignTeam,
 };
 
