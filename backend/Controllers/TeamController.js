@@ -29,7 +29,7 @@ const createTeam = asyncHandler(async (req, res) => {
       members: [...participants, req.user._id],
       teamLeader: req.user._id,
       createdBy: req.user._id,
-      projects: null,
+      projects: [],
     };
     // create a team with the new team object
     const team = await Team.create(newTeam);

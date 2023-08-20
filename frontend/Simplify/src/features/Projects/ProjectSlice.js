@@ -58,10 +58,11 @@ export const getProjects = createAsyncThunk(
 export const assignTeam = createAsyncThunk(
   "projects/assignTeam",
   async (details, thunkAPI) => {
+    console.log(details)
     try {
       // await on the assign team function in the project service component
       const token = thunkAPI.getState().auth.user.token;
-      return await projectService.assignTeam(token, details);
+      return await projectService.assignTeam(details, token);
     } catch (error) {
       // assign an error value if there is one in any of the listed error value holders below
       const message =

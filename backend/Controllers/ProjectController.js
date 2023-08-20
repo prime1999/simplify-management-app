@@ -229,6 +229,10 @@ const assignTeam = asyncHandler(async (req, res) => {
   // get the team id from the request body
   const { teamId, projectId } = req.body;
 
+  if(!teamId && !projectId){
+    throw new Error('Invalid data')
+  }
+
   // search for the current user in the user db using the user's id
   const userExist = await user.findById(req.user._id);
 

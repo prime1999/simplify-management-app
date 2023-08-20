@@ -129,7 +129,7 @@ const Navbar = () => {
               >
                 <IconButton>
                   <Link to="/profile" className="flex items-center">
-                    <Avatar alt="user pic" src={user.pic} />
+                    <Avatar alt="user pic" src={user?.pic} />
                     <p className="font-poppins ml-2 text-[17px] text-black">
                       {user?.name}
                     </p>
