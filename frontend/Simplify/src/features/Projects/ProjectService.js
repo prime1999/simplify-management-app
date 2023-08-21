@@ -38,6 +38,18 @@ const assignTeam = async (details, token) => {
   return data;
 };
 
+// ----------------------------- function to update a project ------------------------------- //
+const updateProject = async (projectId, updatedData, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const { data } = await axios.put(`${API_URL}/${projectId}`, updatedData, config);
+  return data;
+};
+
 // ----------------------------- function to delete a project ------------------------------- //
 const deleteProject = async (projectId, token) => {
   const config = {
@@ -54,6 +66,7 @@ const projectService = {
   createProject,
   getProjects,
   assignTeam,
+  updateProject,
   deleteProject
 };
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TeamMenu from "../../components/ProjectComponents/TeamMenu";
 import ProjectDesign from "../../components/ProjectComponents/ProjectDesign";
-import { getProjects } from "../../features/Projects/ProjectSlice";
+import { getProjects, reset } from "../../features/Projects/ProjectSlice";
 import Spinner from "../../components/Spinner";
 
 const Projects = () => {
@@ -16,6 +16,7 @@ const Projects = () => {
 
 	useEffect(() => {
 		dispatch(getProjects());
+		dispatch(reset());
 	}, [dispatch, fetchProjectsAgain]);
 
 	return (

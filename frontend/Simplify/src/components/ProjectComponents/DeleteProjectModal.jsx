@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import Backdrop from "@mui/material/Backdrop";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import { deleteProject } from "../../features/Projects/ProjectSlice";
+import { deleteProject, reset } from "../../features/Projects/ProjectSlice";
 
 const DeleteProjectModal = ({ open, setOpen, project }) => {
 	// funcion to close modal
@@ -25,6 +25,7 @@ const DeleteProjectModal = ({ open, setOpen, project }) => {
 		if (isSuccess) {
 			toast.info("Project has been deleted");
 		}
+		dispatch(reset());
 	};
 	return (
 		<div>

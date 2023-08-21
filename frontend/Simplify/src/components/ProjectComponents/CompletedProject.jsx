@@ -6,6 +6,7 @@ import { Avatar, AvatarGroup } from "@mui/material";
 import { getFullDate } from "../../config/ProjectLogics";
 import AssignTeamModal from "./AssignTeamModal";
 import DeleteProjectModal from "./DeleteProjectModal";
+import UpdateProjectModal from "./UpdateProjectModal";
 
 const CompletedProject = ({
 	completed,
@@ -15,9 +16,17 @@ const CompletedProject = ({
 	// state for project delete modal
 	const [open, setOpen] = useState(false);
 
+	// state for project update modal
+	const [openUpdateModal, setOpenUpdateModal] = useState(false);
+
 	// function to open delete project modal
 	const handleOpen = () => {
 		setOpen(true);
+	};
+
+	// function to open update project modal
+	const handleOpenUpdateModal = () => {
+		setOpenUpdateModal(true);
 	};
 	return (
 		<div>
@@ -41,7 +50,10 @@ const CompletedProject = ({
 									onClick={handleOpen}
 									className="text-md text-blue hover:cursor-pointer"
 								/>
-								<BiEdit className="text-md text-blue ml-2 hover:cursor-pointer" />
+								<BiEdit
+									onClick={handleOpenUpdateModal}
+									className="text-md text-blue ml-2 hover:cursor-pointer"
+								/>
 							</div>
 						</div>
 						<h2 className="text-lg capitalize font-bold text-navyBlue">
@@ -73,11 +85,6 @@ const CompletedProject = ({
 										setFetchProjectsAgain={setFetchProjectsAgain}
 										projectId={project._id}
 									/>
-									{/* <DeleteProjectModal
-										open={open}
-										setOpen={setOpen}
-										project={project}
-									/> */}
 								</div>
 							)}
 
@@ -89,6 +96,15 @@ const CompletedProject = ({
 							<DeleteProjectModal
 								open={open}
 								setOpen={setOpen}
+								project={project}
+							/>
+						)}
+						{openUpdateModal && (
+							<UpdateProjectModal
+								fetchProjectsAgain={fetchProjectsAgain}
+								setFetchProjectsAgain={setFetchProjectsAgain}
+								open={openUpdateModal}
+								setOpen={setOpenUpdateModal}
 								project={project}
 							/>
 						)}

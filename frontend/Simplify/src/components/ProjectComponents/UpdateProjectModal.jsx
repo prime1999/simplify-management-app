@@ -1,48 +1,53 @@
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { Backdrop, Modal, Fade, Menu, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
-import { toast } from "react-toastify";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import { Modal, Fade, Backdrop } from "@mui/material";
-import { createProject, reset } from "../features/Projects/ProjectSlice";
+import { updateProject } from "../../features/Projects/ProjectSlice";
 
-const CreateProjectModal = ({ setFetchProjectsAgain, fetchProjectsAgain }) => {
-	// stater for the modal
-	const [openModal, setOpenModal] = useState(false);
-	const handleOpenModal = () => setOpenModal(true);
-	const handleCloseModal = () => setOpenModal(false);
+const UpdateProjectModal = ({
+	setFetchProjectsAgain,
+	fetchProjectsAgain,
+	open,
+	setOpen,
+	project,
+}) => {
 	// for the menuItem
 	const [anchorEl, setAnchorEl] = useState(null);
-	const open = Boolean(anchorEl);
+	const openMenu = Boolean(anchorEl);
 	// for the form data
 	const [value, setValue] = useState("pending");
+	const [updatedData, setUpdatedData] = useState(null);
 	const [formData, setformData] = useState({
-		title: "",
-		description: "",
-		status: "",
-		start_date: "",
-		end_date: "",
+		title: project.title,
+		description: project.description,
+		status: project.status,
+		startDate: project.startDate,
+		endDate: project.endDate,
 	});
-	const [projectCreated, setProjectCreated] = useState(false);
 
+	// initialize the useDispatch hook
 	const dispatch = useDispatch();
-	const { project, isLoading, isSuccess, isError, message } = useSelector(
+	// get the projects redux state from the redux store
+	const { isLoading, isError, isSuccess, message } = useSelector(
 		(state) => state.projects
 	);
-	const navigate = useNavigate();
 	// functions for the menuItem
 	const handleClick = (e) => {
 		setAnchorEl(e.currentTarget);
 	};
 
-	const handleClose = () => {
+	const handleCloseMenu = () => {
 		setAnchorEl(null);
 	};
+	// function to close modal
+	const handleClose = () => {
+		setOpen(false);
+	};
 
-	const { title, description, status, start_date, end_date } = formData;
+	const { title, description, status, startDate, endDate } = formData;
 
 	// for chooseing the task status
 	const handleSelector = (value) => {
@@ -51,7 +56,11 @@ const CreateProjectModal = ({ setFetchProjectsAgain, fetchProjectsAgain }) => {
 			...prevState,
 			status: value,
 		}));
-		handleClose();
+		setUpdatedData((prevState) => ({
+			...prevState,
+			status: value,
+		}));
+		handleCloseMenu();
 	};
 
 	// function to change the value of the title, description and due_date field to what is typed in by the user
@@ -60,79 +69,28 @@ const CreateProjectModal = ({ setFetchProjectsAgain, fetchProjectsAgain }) => {
 			...prevState,
 			[e.target.id]: e.target.value,
 		}));
+		setUpdatedData((prevState) => ({
+			...prevState,
+			[e.target.id]: e.target.value,
+		}));
 	};
 
-	useEffect(() => {
-		// if the projectCreated state is tru then
-		if (projectCreated) {
-			// show a success message toast
-			toast.info("Project created, DO assign a team when ready!");
-			// close the modal
-			handleCloseModal();
-			dispatch(reset());
-		}
-		// if there is an error then show a error toalst withe the error message
-		if (isError) {
-			toast.error(message);
-		}
-		//dispatch(reset());
-		setProjectCreated(false);
-	}, [
-		projectCreated,
-		isError,
-		project,
-		isSuccess,
-		message,
-		navigate,
-		dispatch,
-	]);
-
-	// function to submit the task
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		// check if all fields have been filled
-		if (title && description && start_date && end_date && status) {
-			const projectData = {
-				title,
-				description,
-				status,
-				startDate: start_date,
-				endDate: end_date,
-			};
-
-			// dispatch the createProject function in the projects slice component
-			dispatch(createProject(projectData));
-			// set the project created state value to true
-			setProjectCreated(true);
-			// fetch the projects again
+		if (title && description && status && startDate && endDate && updatedData) {
+			dispatch(updateProject({ projectId: project._id, updatedData }));
 			setFetchProjectsAgain(!fetchProjectsAgain);
-			// clear fields
-			setformData({
-				title: "",
-				description: "",
-				status: "",
-				start_date: "",
-				end_date: "",
-			});
 		} else {
-			// if one or all fields was not filled then show the toast error with the message
-			toast.error("Please fill in all fields");
+			toast.error("No updated field");
 		}
 	};
-
 	return (
-		<>
-			<div
-				onClick={handleOpenModal}
-				className="flex items-center justify-between hover:cursor-pointer"
-			>
-				<AiOutlinePlus /> <p className="ml-2">Add Project</p>
-			</div>
+		<div>
 			<Modal
 				aria-labelledby="transition-modal-title"
 				aria-describedby="transition-modal-description"
-				open={openModal}
-				onClose={handleCloseModal}
+				open={open}
+				onClose={handleClose}
 				closeAfterTransition
 				slots={{ backdrop: Backdrop }}
 				slotProps={{
@@ -141,10 +99,10 @@ const CreateProjectModal = ({ setFetchProjectsAgain, fetchProjectsAgain }) => {
 					},
 				}}
 			>
-				<Fade in={openModal}>
+				<Fade in={open}>
 					<div className="absolute left-[30%] top-[20%] bg-white w-[500px] shadow-md px-4 py-8 outline-none">
 						<h1 className="font-poppins font-bold text-2xl uppercase">
-							Create New Project
+							Update Project
 						</h1>
 						<form onSubmit={handleSubmit} className="w-full mt-8 font-right">
 							<input
@@ -167,7 +125,7 @@ const CreateProjectModal = ({ setFetchProjectsAgain, fetchProjectsAgain }) => {
 									<label className="text-md text-gray-600">Start-date</label>
 									<input
 										type="date"
-										value={start_date}
+										value={startDate}
 										onChange={handleChange}
 										id="start_date"
 										className="w-full p-2 mt-2 bg-white shadow-md focus:outline-none"
@@ -177,7 +135,7 @@ const CreateProjectModal = ({ setFetchProjectsAgain, fetchProjectsAgain }) => {
 									<label className="text-md text-gray-600">End-date</label>
 									<input
 										type="date"
-										value={end_date}
+										value={endDate}
 										onChange={handleChange}
 										id="end_date"
 										className="w-full p-2 mt-2 bg-white shadow-md focus:outline-none"
@@ -191,9 +149,9 @@ const CreateProjectModal = ({ setFetchProjectsAgain, fetchProjectsAgain }) => {
 											<button
 												type="button"
 												id="fade-button"
-												aria-controls={open ? "fade-menu" : undefined}
+												aria-controls={openMenu ? "fade-menu" : undefined}
 												aria-haspopup="true"
-												aria-expanded={open ? "true" : undefined}
+												aria-expanded={openMenu ? "true" : undefined}
 												onClick={handleClick}
 												className="flex items-center justify-between font-right w-full p-2 mt-2 bg-white shadow-md focus:outline-none"
 											>
@@ -210,8 +168,8 @@ const CreateProjectModal = ({ setFetchProjectsAgain, fetchProjectsAgain }) => {
 													"aria-labelledby": "fade-button",
 												}}
 												anchorEl={anchorEl}
-												open={open}
-												onClose={handleClose}
+												open={openMenu}
+												onClose={handleCloseMenu}
 												TransitionComponent={Fade}
 											>
 												<MenuItem onClick={() => handleSelector("in-progress")}>
@@ -229,22 +187,19 @@ const CreateProjectModal = ({ setFetchProjectsAgain, fetchProjectsAgain }) => {
 									{/* menu ends */}
 								</div>
 							</div>
-							{/* <div className="mt-8">
-                <AssignTeamModal teamId={teamId} setTeamId={setTeamId} />
-              </div> */}
 							<button
 								type="submit"
-								disabled={isLoading ? true : false}
+								//disabled={isLoading ? true : false}
 								className="w-full text-center py-2 bg-blue text-white font-right mt-4 text-lg hover:bg-secondaryBlue hover:rounded-lg hover:cursor-pointer"
 							>
-								Create Project
+								Update
 							</button>
 						</form>
 					</div>
 				</Fade>
 			</Modal>
-		</>
+		</div>
 	);
 };
 
-export default CreateProjectModal;
+export default UpdateProjectModal;
