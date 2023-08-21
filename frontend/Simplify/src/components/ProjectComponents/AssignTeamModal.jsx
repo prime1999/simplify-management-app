@@ -11,7 +11,6 @@ const AssignTeamModal = ({
 	setFetchProjectsAgain,
 	fetchProjectsAgain,
 }) => {
-	console.log(projectId);
 	const [selectedTeam, setSeletedTeam] = useState(null);
 	// stater for the modal
 	const [open, setOpen] = useState(false);
@@ -26,9 +25,8 @@ const AssignTeamModal = ({
 	}, []);
 
 	const assignTeamToProject = (teamId, team) => {
-		setFetchProjectsAgain(!fetchProjectsAgain);
-		console.log(fetchProjectsAgain);
 		dispatch(assignTeam({ teamId, projectId }));
+		setFetchProjectsAgain(!fetchProjectsAgain);
 		setSeletedTeam(team);
 	};
 

@@ -35,7 +35,18 @@ const assignTeam = async (details, token) => {
   };
 
   const { data } = await axios.put(API_URL, details, config);
-  console.log(data);
+  return data;
+};
+
+// ----------------------------- function to delete a project ------------------------------- //
+const deleteProject = async (projectId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const { data } = await axios.delete(`${API_URL}/${projectId}`, config);
   return data;
 };
 
@@ -43,6 +54,7 @@ const projectService = {
   createProject,
   getProjects,
   assignTeam,
+  deleteProject
 };
 
 export default projectService;

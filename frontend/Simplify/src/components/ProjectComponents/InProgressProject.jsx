@@ -1,23 +1,31 @@
-import React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { BsTrash3Fill } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
 import { Avatar, AvatarGroup } from "@mui/material";
 import { getFullDate } from "../../config/ProjectLogics";
 import AssignTeamModal from "./AssignTeamModal";
+import DeleteProjectModal from "./DeleteProjectModal";
 
 const InProgressProject = ({
 	in_progress,
 	setFetchProjectsAgain,
 	fetchProjectsAgain,
 }) => {
+	// state for project delete modal
+	const [open, setOpen] = useState(false);
+
+	// function to open delete project modal
+	const handleOpen = () => {
+		setOpen(true);
+	};
 	return (
 		<div>
 			{in_progress.length !== 0 &&
 				in_progress?.map((project) => (
 					<div
 						key={project._id}
-						className="font-poppins bg-gray-200 p-4 rounded-md"
+						className="font-poppins mb-2 bg-gray-200 p-4 rounded-md"
 					>
 						<div className="flex justify-between">
 							<button
@@ -29,7 +37,10 @@ const InProgressProject = ({
 								View
 							</button>
 							<div className="flex">
-								<BsTrash3Fill className="text-md text-blue hover:cursor-pointer" />
+								<BsTrash3Fill
+									onClick={handleOpen}
+									className="text-md text-blue hover:cursor-pointer"
+								/>
 								<BiEdit className="text-md text-blue ml-2 hover:cursor-pointer" />
 							</div>
 						</div>
@@ -66,6 +77,13 @@ const InProgressProject = ({
 								<Link>Team Chat</Link>
 							</div>
 						</div>
+						{open && (
+							<DeleteProjectModal
+								open={open}
+								setOpen={setOpen}
+								project={project}
+							/>
+						)}
 					</div>
 				))}
 		</div>

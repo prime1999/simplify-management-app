@@ -20,7 +20,10 @@ const Projects = () => {
 
 	return (
 		<div className="container w-11/12 mx-auto">
-			<TeamMenu />
+			<TeamMenu
+				fetchProjectsAgain={fetchProjectsAgain}
+				setFetchProjectsAgain={setFetchProjectsAgain}
+			/>
 			{isLoading ? (
 				<Spinner />
 			) : (
