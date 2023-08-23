@@ -140,6 +140,8 @@ const addNewMember = asyncHandler(async (req, res) => {
         new: true,
       }
     );
+
+    
     res.status(200);
     res.json(updatedTeamMember);
   } catch (error) {
@@ -169,9 +171,6 @@ const removeProjecfromTeam = asyncHandler(async (req, res) => {
       (project) => project.toString() === projectId
     );
 
-    console.log(teamExist);
-    console.log(projectId);
-
     if (!checkProjectsUnderTeam) {
       throw new Error("Project not handled by this team");
     }
@@ -186,8 +185,18 @@ const removeProjecfromTeam = asyncHandler(async (req, res) => {
       { new: true }
     );
 
+    const updatedProject = await Project.findOneAndUpdate(
+      { _id: projectId },
+      // remove the participants and the team from the project
+      {
+        participants: null,
+        team: null
+      },
+      { new: true } // This option returns the updated document
+    ).populate("participants", "-password");
+
     res.status(200);
-    res.json(updateTeamProjects);
+    res.json({updateTeamProjects, updatedProject});
   } catch (error) {
     res.status(401);
     throw new Error(error.message);

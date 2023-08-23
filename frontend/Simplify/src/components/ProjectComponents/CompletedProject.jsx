@@ -7,6 +7,7 @@ import { getFullDate } from "../../config/ProjectLogics";
 import AssignTeamModal from "./AssignTeamModal";
 import DeleteProjectModal from "./DeleteProjectModal";
 import UpdateProjectModal from "./UpdateProjectModal";
+import ProjectDetailsModal from "./ProjectDetailsModal";
 
 const CompletedProject = ({
 	completed,
@@ -37,14 +38,11 @@ const CompletedProject = ({
 						className="font-poppins mb-2 bg-gray-200 p-4 rounded-md"
 					>
 						<div className="flex justify-between">
-							<button
-								style={{
-									backgroundColor: "rgba(240, 255, 255, 0.5)",
-								}}
-								className="text-sm text-blue font-bold px-2 py-1 rounded-md mb-4"
-							>
-								View
-							</button>
+							<ProjectDetailsModal
+								setFetchProjectsAgain={setFetchProjectsAgain}
+								fetchProjectsAgain={fetchProjectsAgain}
+								project={project}
+							/>
 							<div className="flex">
 								<BsTrash3Fill
 									onClick={handleOpen}
@@ -59,9 +57,6 @@ const CompletedProject = ({
 						<h2 className="text-lg capitalize font-bold text-navyBlue">
 							{project?.title}
 						</h2>
-						<p className="font-lato text-secondaryBlue font-semibold">
-							{project?.description}
-						</p>
 						<div className="mt-4 text-sm font-right text-blue bg-white w-28 rounded-lg p-2">
 							{getFullDate(project?.startDate)}
 						</div>

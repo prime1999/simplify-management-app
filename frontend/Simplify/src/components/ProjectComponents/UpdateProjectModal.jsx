@@ -127,7 +127,7 @@ const UpdateProjectModal = ({
 										type="date"
 										value={startDate}
 										onChange={handleChange}
-										id="start_date"
+										id="startDate"
 										className="w-full p-2 mt-2 bg-white shadow-md focus:outline-none"
 									/>
 								</div>
@@ -137,7 +137,7 @@ const UpdateProjectModal = ({
 										type="date"
 										value={endDate}
 										onChange={handleChange}
-										id="end_date"
+										id="endDate"
 										className="w-full p-2 mt-2 bg-white shadow-md focus:outline-none"
 									/>
 								</div>
