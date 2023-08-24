@@ -107,9 +107,17 @@ export const logout = createAsyncThunk("auth/logout", async () => {
 // ------------------------------------- function to select user ------------------------ //
 export const selectUser = createAsyncThunk(
   "auth/selectUser",
-  (user, thunkAPI) => {
-    const userList = thunkAPI.getState().auth.userList.slice(); // Make a copy of the current userList
-    return authService.selectUser(userList, user);
+  (user) => {
+    //const userList = thunkAPI.getState().auth.userList.slice(); // Make a copy of the current userList
+    return user
+  }
+);
+
+// ------------------------------------- function to remove a selected user ------------------------ //
+export const removeSelectedUser = createAsyncThunk(
+  "auth/removeSelectedUser",
+  (userId) => {
+    return userId
   }
 );
 
@@ -189,6 +197,10 @@ export const authSlice = createSlice({
       // for selecting a user
       .addCase(selectUser.fulfilled, (state, action) => {
         state.userList.push(action.payload);
+      })
+      // for removing a selected user
+      .addCase(removeSelectedUser.fulfilled, (state, action) => {
+        state.userList = state.userList.filter(user => user._id !== action.payload);
       })
       // for log out
       .addCase(logout.fulfilled, (state) => {

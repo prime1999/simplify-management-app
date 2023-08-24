@@ -55,7 +55,7 @@ button, input, p{
   } 
 
   ::-webkit-scrollbar {
-    width: 0px;
+    width: 5px;
   }
   
   ::-webkit-scrollbar-thumb {
@@ -64,5 +64,5 @@ button, input, p{
   
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background: #0691d1;
   }

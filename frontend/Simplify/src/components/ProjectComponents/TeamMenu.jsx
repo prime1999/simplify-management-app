@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RxMagnifyingGlass } from "react-icons/rx";
 import { AiOutlineTeam, AiOutlinePlus } from "react-icons/ai";
@@ -8,12 +7,14 @@ import AddTeamModal from "./AddTeamModal";
 import CreateProjectModal from "../../pages/CreateProjectModal";
 
 const TeamMenu = ({ setFetchProjectsAgain, fetchProjectsAgain }) => {
+	const [fetchTeamsAgain, setFetchTeamsAgain] = useState(false);
+	// init te usedispatch function
 	const dispatch = useDispatch();
-
+	// get the teams details from the redux store (teams)
 	const { teams, isLoading } = useSelector((state) => state.teams);
 	useEffect(() => {
 		dispatch(getTeams());
-	}, []);
+	}, [fetchTeamsAgain]);
 
 	return (
 		<>
@@ -50,7 +51,10 @@ const TeamMenu = ({ setFetchProjectsAgain, fetchProjectsAgain }) => {
 						</span>
 					</div>
 					<div>
-						<AddTeamModal>
+						<AddTeamModal
+							fetchTeamsAgain={fetchTeamsAgain}
+							setFetchTeamsAgain={setFetchTeamsAgain}
+						>
 							<div className="flex items-center bg-blue py-2 px-4 rounded-3xl ml-8 text-white hover:bg-secondaryBlue">
 								<AiOutlinePlus className="text-lg font-bold" />{" "}
 								<p className="text-sm ml-2">Add a new team</p>

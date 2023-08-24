@@ -61,21 +61,11 @@ const logout = async () => {
   localStorage.removeItem("user");
 };
 
-// ---------------------------------- select user ------------------------ //
-const selectUser = (userList, user) => {
-  console.log(user);
-  console.log(userList);
-  userList.push(user);
-  console.log(userList);
-  return user;
-};
-
 const authService = {
   register,
   logUserIn,
   getUsers,
   searchUser,
-  selectUser,
   logout,
 };
 
