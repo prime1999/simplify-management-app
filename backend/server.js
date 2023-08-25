@@ -10,6 +10,7 @@ const notesRoute = require("./routes/notesRoutes");
 const projectRouter = require("./routes/projectRoutes");
 const teamRoute = require("./routes/teamRoutes");
 const chatRoute = require("./routes/chatRoutes");
+const messageRoute = require("./routes/messageRoutes");
 
 //create express app
 const app = express();
@@ -31,6 +32,8 @@ app.use("/api/projects", projectRouter);
 app.use("/api/teams", teamRoute);
 
 app.use("/api/chats", chatRoute);
+
+app.use("/api/message", messageRoute);
 
 //connect to db
 connectDb();
