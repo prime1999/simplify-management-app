@@ -6,6 +6,11 @@
 @tailwind components;
 @tailwind utilities;
 
+body{
+  background-color: rgb(250, 248, 248);
+  overflow-x: hidden;
+}
+
 button, input, p{
     transition: .5s ease-in-out;
 }
