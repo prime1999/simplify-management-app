@@ -4,12 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
 import { toast } from "react-toastify";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { Modal, Fade, Backdrop } from "@mui/material";
-import { createProject, reset } from "../features/Projects/ProjectSlice";
+import { Modal, Fade, Backdrop, Tooltip } from "@mui/material";
+import { createProject, reset } from "../../features/Projects/ProjectSlice";
 
 const CreateProjectModal = ({ setFetchProjectsAgain, fetchProjectsAgain }) => {
+	// for the drwaer on mobile screen
+	const isSmallerThanMd = useMediaQuery((theme) =>
+		theme.breakpoints.down("md")
+	);
 	// stater for the modal
 	const [openModal, setOpenModal] = useState(false);
 	const handleOpenModal = () => setOpenModal(true);
@@ -122,12 +127,23 @@ const CreateProjectModal = ({ setFetchProjectsAgain, fetchProjectsAgain }) => {
 
 	return (
 		<>
-			<div
-				onClick={handleOpenModal}
-				className="flex items-center justify-between hover:cursor-pointer"
-			>
-				<AiOutlinePlus /> <p className="ml-2">Add Project</p>
-			</div>
+			{!isSmallerThanMd ? (
+				<div
+					onClick={handleOpenModal}
+					className="flex items-center justify-between hover:cursor-pointer"
+				>
+					<AiOutlinePlus /> <p className="ml-2">Add Project</p>
+				</div>
+			) : (
+				<Tooltip title="Add Project" arrow>
+					<div
+						onClick={handleOpenModal}
+						className="flex items-center justify-between rounded-full hover:cursor-pointer"
+					>
+						<AiOutlinePlus className="rounded-full text-lg" />
+					</div>
+				</Tooltip>
+			)}
 			<Modal
 				aria-labelledby="transition-modal-title"
 				aria-describedby="transition-modal-description"

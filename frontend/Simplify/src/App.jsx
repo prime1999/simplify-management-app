@@ -18,6 +18,7 @@ import TasksCategories from "./pages/TasksCategories";
 import AddTask from "./pages/AddTask";
 import UpdateTask from "./pages/UpdateTask";
 import Projects from "./pages/Projects/Projects";
+import Chat from "./pages/Chat-room/Chat";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -49,6 +50,11 @@ const router = createBrowserRouter(
 					{/* projects route */}
 					<Route path="/projects" element={<PrivateRoute />}>
 						<Route path="/projects" element={<Projects />} />
+					</Route>
+					{/* -------- routes for chat-room ---------- */}
+					{/* chat-room route */}
+					<Route path="/chat" element={<PrivateRoute />}>
+						<Route path="/chat" element={<Chat />} />
 					</Route>
 				</Route>
 			</Route>
