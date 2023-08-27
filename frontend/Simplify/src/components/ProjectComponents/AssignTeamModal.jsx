@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Modal, Fade, Backdrop } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { GrStatusGood } from "react-icons/gr";
 import { getTeams } from "../../features/Teams/TeamSlice";
 import AddTeamModal from "./AddTeamModal";
 import { assignTeam } from "../../features/Projects/ProjectSlice";

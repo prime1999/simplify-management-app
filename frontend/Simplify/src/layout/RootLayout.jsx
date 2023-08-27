@@ -152,18 +152,7 @@ const RootLayout = () => {
 					>
 						<Navbar />
 						<Outlet />
-						{path === "chat" ? (
-							<Footer />
-						) : (
-							// for chats footer
-							<>
-								<div>
-									<h4 className="text-center text-md text-darkGray mt-16">
-										&copy; 2023 EMINENCE, All rights reserved
-									</h4>
-								</div>
-							</>
-						)}
+						{path === "chat" && <Footer />}
 					</div>
 				</div>
 			</div>
