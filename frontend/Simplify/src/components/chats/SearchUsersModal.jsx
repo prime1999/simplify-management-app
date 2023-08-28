@@ -3,8 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Modal, Fade, Backdrop, Avatar } from "@mui/material";
 import { RxMagnifyingGlass } from "react-icons/rx";
 import { searchUser } from "../../features/Auth/AuthSlice";
+import { accessChat, setSelectedChat } from "../../features/Chats/ChatSlice";
 
-const SearchUsersModal = ({ open, handleClose }) => {
+const SearchUsersModal = ({
+	open,
+	handleClose,
+	fetchChatsAgain,
+	setFetchChatsAgain,
+}) => {
 	const [user, setUser] = useState("");
 	// init the dispatch function
 	const dispatch = useDispatch();
@@ -20,6 +26,12 @@ const SearchUsersModal = ({ open, handleClose }) => {
 		}
 		// dispatch the search users function in the auth slice with the user name/email passed as an argument
 		dispatch(searchUser(user));
+	};
+
+	const handleFunction = (userId) => {
+		dispatch(accessChat(userId));
+		setFetchChatsAgain(!fetchChatsAgain);
+		handleClose();
 	};
 
 	return (
@@ -60,6 +72,7 @@ const SearchUsersModal = ({ open, handleClose }) => {
 								users.map((user) => (
 									<div
 										key={user._id}
+										onClick={() => handleFunction(user._id)}
 										className="flex items-center mt-4 shadow-md p-4 hover:cursor-pointer"
 									>
 										<Avatar alt="Remy Sharp" src={user.pic} />

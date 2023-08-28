@@ -54,7 +54,9 @@ const accessChat = asyncHandler(async (req, res) => {
 
 			const fullChat = await Chat.findOne({ _id: createChat._id })
 				// populate (fill) the users with their details except their password using the user model as a reference
-				.populate("users", "-password");
+				.populate("users", "-password")
+				// also populate (fill) the latest message with its details
+				.populate("latestMessage");
 			res.status(201);
 			res.json(fullChat);
 		} catch (error) {

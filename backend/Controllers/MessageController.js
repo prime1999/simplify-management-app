@@ -70,7 +70,30 @@ const getAllMessages = asyncHandler(async (req, res) => {
 	}
 });
 
+// ------------------------------ function to get the latest message of a chat ------------------------ //
+const getLatestMessage = asyncHandler(async (req, res) => {
+	try {
+		// find leatest message of a chat with the id of the chatId sent in th erquest parameter
+		const latestMessage = await Message.find({
+			_id: req.body.messageId,
+			chat: req.body.chatId,
+		})
+			// populate (fill) the sender object with the info of the sender of te message
+			.populate("sender", "name pic email")
+			// populate (fill) the chat with the details of the chat the message belongs to
+			.populate("chat");
+		// send the messages found to the frontend
+		res.status(200);
+		res.json(latestMessage);
+	} catch (error) {
+		// if an error appers in the try block, then
+		res.status(400);
+		throw new Error(error.message);
+	}
+});
+
 module.exports = {
 	createMessage,
 	getAllMessages,
+	getLatestMessage,
 };
