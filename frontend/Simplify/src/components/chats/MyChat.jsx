@@ -6,7 +6,7 @@ import { getOtherUser } from "../../config/ChatLogic";
 import groupPic from "../../assets/images/png/download.png";
 import { setSelectedChat } from "../../features/Chats/ChatSlice";
 
-const MyChat = ({ fetchChatsAgain, setFetchChatsAgain }) => {
+const MyChat = () => {
 	const dispatch = useDispatch();
 	// get the user chats from the redux store
 	const { chats, selectedChat, isLoading } = useSelector(
@@ -17,7 +17,6 @@ const MyChat = ({ fetchChatsAgain, setFetchChatsAgain }) => {
 
 	const handleChat = (chat) => {
 		dispatch(setSelectedChat(chat));
-		console.log(selectedChat);
 	};
 
 	return (

@@ -42,6 +42,55 @@ connectDb();
 app.use(errorHandler);
 
 //listen to request
-app.listen(process.env.PORT, () => {
+const server = app.listen(process.env.PORT, () => {
 	console.log(`listening to request on port ${process.env.PORT}`);
+});
+
+// initialize socket IO
+const io = require("socket.io")(server, {
+	// get the time it takes for a user to connect before the socket disconnects itsel t save band width
+	pingTimeout: 6000,
+	// set cors for the specified web address
+	cors: {
+		origin: "http://localhost:5173",
+	},
+});
+
+io.on("connection", (socket) => {
+	console.log("A user has connected");
+
+	// create a private room for each users using there id
+	socket.on("set-up", (userData) => {
+		// add the user to the room with his/her Id
+		socket.join(userData.id);
+		console.log(userData.id);
+		// emit a socket to alert the frontend that the user has joined a room
+		socket.emit("connected");
+	});
+
+	// listen to a socket request from the fronted to add users to a chat room
+	socket.on("join chat", (room) => {
+		// create a room for the users of the chat and add them to the room
+		socket.join(room);
+		console.log(`User joined room ${room}`);
+	});
+
+	// socket to send a message
+	socket.on("new message", (newMessageReceived) => {
+		console.log(newMessageReceived.content);
+		// save the chat from where the message is sent to this chat variable
+		let chat = newMessageReceived.chat;
+
+		// check if there is a user in this chat
+		if (!chat.users) console.log("chat users not defined");
+
+		// function to send the message to all other users of the chat except the message sender
+		chat.users.forEach((user) => {
+			console.log(user._id);
+			// check if the the user is the sender
+			if (user._id === newMessageReceived.sender._id) return;
+			// but if not then send the message to the rooms of the user's id
+			socket.in(user._id).emit("message received", newMessageReceived);
+		});
+	});
 });

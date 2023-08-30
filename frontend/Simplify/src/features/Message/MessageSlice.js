@@ -3,7 +3,7 @@ import messageService from "./MessageService";
 
 const initialState = {
 	messages: null,
-	message: null,
+	NewMessage: null,
 	isLoading: false,
 	isSuccess: false,
 	isError: false,
@@ -54,6 +54,14 @@ export const fetchMessages = createAsyncThunk(
 	}
 );
 
+//  ------------------------- function to add a message to the existing mesaages array -------------------- //
+export const addNewMessage = createAsyncThunk(
+	"messages/addNewMessage",
+	(newMessageReceived) => {
+		return newMessageReceived;
+	}
+);
+
 export const messageSlice = createSlice({
 	name: "messages",
 	initialState,
@@ -66,10 +74,12 @@ export const messageSlice = createSlice({
 			.addCase(sendMessage.pending, (state) => {
 				state.isLoading = true;
 			})
-			.addCase(sendMessage.fulfilled, (state) => {
+			.addCase(sendMessage.fulfilled, (state, action) => {
 				state.isLoading = false;
 				state.isSuccess = true;
 				state.isError = false;
+				state.NewMessage = action.payload;
+				state.messages = [...state.messages, action.payload];
 			})
 			.addCase(sendMessage.rejected, (state, action) => {
 				state.isLoading = false;
@@ -92,6 +102,10 @@ export const messageSlice = createSlice({
 				state.isSuccess = false;
 				state.isError = true;
 				state.message = action.payload;
+			})
+			// for to add a new message
+			.addCase(addNewMessage.fulfilled, (state, action) => {
+				state.messages = [...state.messages, action.payload];
 			});
 	},
 });

@@ -1,10 +1,10 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-
-import SingleChat from "./SIngleChat";
+import SingleChat from "./SingleChat";
 
 const ChatBox = () => {
 	const { selectedChat } = useSelector((state) => state.chats);
+	console.log(selectedChat);
 
 	return (
 		<div className="relative w-full h-screen px-4">

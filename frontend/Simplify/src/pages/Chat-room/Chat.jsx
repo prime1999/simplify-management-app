@@ -50,11 +50,6 @@ const Chat = () => {
 				/>
 				<ChatBox />
 			</div>
-			<div>
-				<h4 className="text-center text-md text-darkGray my-4">
-					&copy; 2023 EMINENCE, All rights reserved
-				</h4>
-			</div>
 		</div>
 	);
 };

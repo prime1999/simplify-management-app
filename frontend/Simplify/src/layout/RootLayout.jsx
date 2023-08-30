@@ -152,7 +152,7 @@ const RootLayout = () => {
 					>
 						<Navbar />
 						<Outlet />
-						{path === "chat" && <Footer />}
+						<Footer />
 					</div>
 				</div>
 			</div>
