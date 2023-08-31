@@ -15,12 +15,14 @@ const ScrollableChat = () => {
 				{messages &&
 					messages?.map((message, index) =>
 						message.sender._id === user.id ? (
-							<CurrentUserMessage
-								key={message._id}
-								message={message}
-								messages={messages}
-								index={index}
-							/>
+							<div className="my-4">
+								<CurrentUserMessage
+									key={message._id}
+									message={message}
+									messages={messages}
+									index={index}
+								/>
+							</div>
 						) : (
 							<OtherUsersMessage
 								key={message._id}

@@ -89,6 +89,8 @@ const PendingProjects = ({
 								open={open}
 								setOpen={setOpen}
 								project={project}
+								fetchProjectsAgain={fetchProjectsAgain}
+								setFetchProjectsAgain={setFetchProjectsAgain}
 							/>
 						)}
 						{openUpdateModal && (

@@ -75,6 +75,11 @@ io.on("connection", (socket) => {
 		console.log(`User joined room ${room}`);
 	});
 
+	// socket to listen to when the user is typing
+	socket.on("typing", (room) => socket.in(room).emit("typing"));
+	// socket to listen to when the user stops typing
+	socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
+
 	// socket to send a message
 	socket.on("new message", (newMessageReceived) => {
 		console.log(newMessageReceived.content);

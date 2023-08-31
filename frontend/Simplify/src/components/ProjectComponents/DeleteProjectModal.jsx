@@ -5,7 +5,13 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import { deleteProject, reset } from "../../features/Projects/ProjectSlice";
 
-const DeleteProjectModal = ({ open, setOpen, project }) => {
+const DeleteProjectModal = ({
+	open,
+	setOpen,
+	project,
+	setFetchProjectsAgain,
+	fetchProjectsAgain,
+}) => {
 	// funcion to close modal
 	const handleClose = () => {
 		setOpen(false);
@@ -21,6 +27,7 @@ const DeleteProjectModal = ({ open, setOpen, project }) => {
 		console.log("test");
 		// dispatch the delete project function with the task id an an argument
 		dispatch(deleteProject(id));
+		setFetchProjectsAgain(!fetchProjectsAgain);
 		// if the dispatch is successful then let the user know
 		if (isSuccess) {
 			toast.info("Project has been deleted");

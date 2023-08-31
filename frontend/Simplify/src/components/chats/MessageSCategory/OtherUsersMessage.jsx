@@ -6,8 +6,8 @@ import { isFirstMessage, isSameSender } from "../../../config/ChatLogic";
 const OtherUsersMessage = ({ message, messages, index }) => {
 	const { user } = useSelector((state) => state.auth);
 	return (
-		<div className="ml-[0]">
-			<div className="flex flex-row justify-stretch">
+		<div>
+			<div className="flex flex-row items-start">
 				<div className="mt-2">
 					{isSameSender(messages, message, index, user) ||
 						(isFirstMessage(messages, messages, user, index) && (
@@ -17,7 +17,10 @@ const OtherUsersMessage = ({ message, messages, index }) => {
 						))}
 				</div>
 				<div className="flex flex-row">
-					<h6 className="ml-2 p-2 mt-2 rounded-md text-black bg-white">
+					<h6
+						className="ml-2 p-2 mt-2 rounded-md text-black max-w-[250px] bg-white"
+						style={{ wordWrap: "break-word" }}
+					>
 						{message.content}
 					</h6>
 				</div>

@@ -10,6 +10,7 @@ import { FiLogOut } from "react-icons/fi";
 import { BsBellFill } from "react-icons/bs";
 import { logout, reset } from "../features/Auth/AuthSlice";
 import { Avatar } from "@mui/material";
+import ProfileModal from "./ProfileModal";
 
 const Navbar = () => {
 	// for the menuItem
@@ -122,12 +123,12 @@ const Navbar = () => {
 								style={{ backgroundColor: "transparent" }}
 							>
 								<IconButton>
-									<Link to="/profile" className="flex items-center">
+									<ProfileModal>
 										<Avatar alt="user pic" src={user?.pic} />
 										<p className="font-poppins ml-2 text-[17px] text-black">
 											{user?.name}
 										</p>
-									</Link>
+									</ProfileModal>
 								</IconButton>
 							</Tooltip>
 						</div>

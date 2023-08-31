@@ -44,7 +44,7 @@ const TaskDesign = () => {
 
 	return (
 		<>
-			<div className="flex flex-col items-center justify-between w-full mt-16 md:flex-row">
+			<div className="flex flex-col items-start justify-between w-full mt-16 md:flex-row">
 				<PendingTasks taskStatus={taskStatus} />
 				<CompletedTask taskStatus={taskStatus} />
 				<InProgressTask taskStatus={taskStatus} />

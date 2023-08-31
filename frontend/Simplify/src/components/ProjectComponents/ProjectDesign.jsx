@@ -49,7 +49,7 @@ const ProjectDesign = ({ fetchProjectsAgain, setFetchProjectsAgain }) => {
 			completed: projectStatus.completed,
 			in_progress: projectStatus.in_progress,
 		});
-	}, [projects]);
+	}, [fetchProjectsAgain]);
 
 	if (isLoading) {
 		return <Spinner />;

@@ -27,7 +27,7 @@ const SingleChat = () => {
 	const { user } = useSelector((state) => state.auth);
 
 	const [newMessage, setNewMessage] = useState("");
-	console.log("me");
+	const [typing, setTyping] = useState(false);
 
 	useEffect(() => {
 		// connect to socket once user open a chat
@@ -37,20 +37,44 @@ const SingleChat = () => {
 		// listen to a socket from the backend to know if user has joined the rivate room succesfully
 		socket.on("connected", () => {
 			setSocketConnected(true);
-			console.log(socketConnected);
 		});
+		// listen to the socket event to indicate that a user is typing
+		socket.on("typing", () => setTyping(true));
+		// listen to the socket event to indicate that a user has stopped typing
+		socket.on("stop typing", () => setTyping(false));
 	}, []);
 
 	useEffect(() => {
 		dispatch(fetchMessages(selectedChat._id));
-		// emiyt a socket request to the
+		// emit a socket request to the backend for the user to join the selected chat
 		socket.emit("join chat", selectedChat._id);
+		// save the selected chat in to the selectedChatCompare variable
 		selectedChatCompare = selectedChat;
 	}, [selectedChat]);
 
 	// function to run when the user is typing
 	const typingHandler = (e) => {
 		setNewMessage(e.target.value);
+
+		if (!socketConnected) return;
+
+		if (!typing) {
+			setTyping(true);
+			socket.emit("typing", selectedChat._id);
+		}
+
+		let currentTime = new Date().getTime();
+		let indicatorDuration = 3000;
+
+		setTimeout(() => {
+			let typingTime = new Date().getTime();
+			let timeDiff = typingTime - currentTime;
+
+			if (timeDiff >= indicatorDuration && !typing) {
+				socket.emit("stop typing", selectedChat._id);
+				setTyping(false);
+			}
+		}, 3000);
 	};
 
 	// function to run when the user submits a message
@@ -60,21 +84,11 @@ const SingleChat = () => {
 		if (newMessage) {
 			dispatch(sendMessage({ chatId, content: newMessage }));
 		}
-		console.log(newMessage);
-
-		// setTimeout(async () => {
-		// 	if (NewMessage) {
-		// 		console.log(NewMessage);
-		// 		await socket.emit("new message", NewMessage);
-		// 	}
-		// }, 3000); // 3000 milliseconds = 3 seconds
-
 		setNewMessage("");
 	};
 
 	useEffect(() => {
 		if (NewMessage) {
-			console.log(NewMessage);
 			setMessageSent(!messageSent);
 			socket.emit("new message", NewMessage);
 		}
@@ -118,6 +132,7 @@ const SingleChat = () => {
 			</div>
 			<div className="relative h-[85%] w-full p-2 mt-2">
 				<ScrollableChat />
+				{typing && "typing"}
 			</div>
 			<form
 				onSubmit={(e) => handleSubmit(e, selectedChat._id)}

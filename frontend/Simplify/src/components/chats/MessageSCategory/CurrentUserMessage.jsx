@@ -6,10 +6,13 @@ import { isFirstMessage, isSameSender } from "../../../config/ChatLogic";
 const CurrentUserMessage = ({ messages, message, index }) => {
 	const { user } = useSelector((state) => state.auth);
 	return (
-		<div className="ml-[80%]">
-			<div className="flex items-start">
-				<div className="flex flex-row items-start justify-start">
-					<h6 className="mr-2 p-2 mt-2 rounded-md text-white bg-navyBlue">
+		<div className="mr-4">
+			<div className="flex items-end justify-end">
+				<div className="flex flex-row items-start">
+					<h6
+						className="mr-2 p-2 mt-2 rounded-md text-white max-w-[250px] bg-navyBlue"
+						style={{ wordWrap: "break-word" }}
+					>
 						{message.content}
 					</h6>
 				</div>
